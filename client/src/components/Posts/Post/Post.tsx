@@ -1,5 +1,5 @@
 import React from 'react'
-
+import styles from './ScssPost.module.scss'
 
 const Post = () => {
   return (
