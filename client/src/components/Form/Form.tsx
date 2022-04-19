@@ -1,12 +1,10 @@
 import React from 'react'
 
 
-const App = () => {
+const Form = () => {
   return (
-    <div>
-      <h1>App</h1>
-    </div>
+    <h1>From</h1>
   )
 }
 
-export default App
+export default Form
