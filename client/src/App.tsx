@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './ScssApp.module.scss'
 import { AppBar, Container, Grid, Grow, Typography } from '@material-ui/core'
 import flashback from './img/flashback.png'
 import Posts from './components/Posts/Posts'
 import Form from './components/Form/Form'
+import { useDispatch } from 'react-redux'
+import { getPostsThunk } from './actions/postsAction'
 
 const App = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getPostsThunk())
+  }, [])
+
   return (
     <Container maxWidth='lg'>
       <AppBar className={styles.appBar} position='static' color='inherit'>
@@ -14,14 +22,14 @@ const App = () => {
       </AppBar>
       <Grow in>
         <Container>
-            <Grid container justify='space-between' alignItems='stretch' spacing={3}>
-              <Grid item xs={12} sm={7}>
-                <Posts/>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Form/>
-              </Grid>
+          <Grid container justify='space-between' alignItems='stretch' spacing={3}>
+            <Grid item xs={12} sm={7}>
+              <Posts/>
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <Form/>
+            </Grid>
+          </Grid>
         </Container>
       </Grow>
 
