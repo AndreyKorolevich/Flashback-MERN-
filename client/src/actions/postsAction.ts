@@ -1,22 +1,21 @@
 import * as api from '../api'
 import { FETCH_ALL } from '../reducers/postsReducer'
-import { Action, AnyAction, Dispatch } from 'redux'
-import { ThunkAction } from 'redux-thunk'
+import { ActionTypes, ThunkType } from '../reducers/store'
 
-export const getPostsActionCreator = (payload: any): AnyAction => {
-  return {
+
+export const actions = {
+  getPostsActionCreator: (payload: string) => ({
     type: FETCH_ALL,
     payload: payload
-  }
+  } as const)
 }
 
-type DispatchType = Dispatch<Action>
-type ThunkType = ThunkAction<Promise<string>, any, null, any>
+export type PostsActionType = ActionTypes<typeof actions>
 
-export const getPostsThunk = () => async (dispatch: DispatchType): Promise<void> => {
+export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     const { data } = await api.fetchPosts()
-    dispatch(getPostsActionCreator(data))
+    dispatch(actions.getPostsActionCreator(data))
   } catch (e) {
     console.log(e)
   }
