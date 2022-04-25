@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import styles from './ScssForm.module.scss'
-import { Paper, TextField, Typography } from '@material-ui/core'
+import { Button, Paper, TextField, Typography } from '@material-ui/core'
+import DropZone from '../DropZone/DropZone'
+import classname from 'classnames'
 
 
 type PostDataType = {
@@ -22,23 +24,31 @@ const Form: React.FC<unknown> = () => {
 
   }
 
+  const clear = () => {
+
+  }
+
   return (
     <Paper className={styles.paper}>
-      <form autoComplete={'off'} noValidate className={styles.form} onSubmit={onSubmit}>
+      <form autoComplete={'off'} noValidate className={classname(styles.form, styles.root)} onSubmit={onSubmit}>
         <Typography variant={'h6'}>Creating a card</Typography>
         <TextField value={postData.creator} name={'creator'} variant={'outlined'} label={'Creator'} fullWidth
-                   onChange={(e) => setPostData({ ...postData, creator: e.target.value })}/>
-        <TextField value={postData.title} name={'title'} variant={'outlined'} label={'Title'} fullWidth
-                   onChange={(e) => setPostData({ ...postData, title: e.target.value })}/>
-        <TextField value={postData.message} name={'message'} variant={'outlined'} label={'Message'} fullWidth
+                   className={styles.input} size={'small'}
+                   onChange={(e) => setPostData({ ...postData, creator: e.target.value })} />
+        <TextField value={postData.title} name={'title'} variant={'outlined'} label={'Title'} fullWidth size={'small'}
+                   onChange={(e) => setPostData({ ...postData, title: e.target.value })} className={styles.input}/>
+        <TextField value={postData.message} name={'message'} variant={'outlined'} label={'Message'}
+                   size={'small'} className={styles.input} fullWidth
                    onChange={(e) => setPostData({ ...postData, message: e.target.value })}/>
-        <TextField value={postData.tags} name={'tags'} variant={'outlined'} label={'Tags'} fullWidth
-                   onChange={(e) => setPostData({ ...postData, tags: e.target.value })}/>
+        <TextField value={postData.tags} name={'tags'} variant={'outlined'} label={'Tags'} fullWidth size={'small'}
+                   onChange={(e) => setPostData({ ...postData, tags: e.target.value })} className={styles.input}/>
         <TextField value={postData.selectedFile} name={'selectedFile'} variant={'outlined'} label={'Selected file'}
-                   fullWidth
+                   fullWidth size={'small'}
                    onChange={(e) => setPostData({ ...postData, selectedFile: e.target.value })}/>
-        <div className={styles.fileInput}>
-        </div>
+        <DropZone onChange={(e) => setPostData({ ...postData, selectedFile: e })}/>
+        <Button className={styles.buttonSubmit} variant='contained' color={'primary'} size={'large'} type={'submit'}
+                fullWidth>Submit</Button>
+        <Button variant='contained' color={'secondary'} size={'small'} onClick={clear} fullWidth>Clear</Button>
       </form>
     </Paper>
   )

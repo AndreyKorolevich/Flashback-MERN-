@@ -1,6 +1,6 @@
 .root {
-  & .MuiTextField-root {
-    margin: 1em;
+  .input {
+    margin: 2px 0;
   }
 }
 
@@ -20,5 +20,5 @@
 }
 
 .buttonSubmit {
-  margin-bottom: 10px;
+  margin-bottom: 5px!important;
 }
