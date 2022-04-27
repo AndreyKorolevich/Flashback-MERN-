@@ -1,6 +1,5 @@
 import React from 'react'
 import {useAppSelector} from '../../hooks/hooks'
-import styles from './ScssPosts.module.scss'
 import Post from './Post/Post'
 import { getPostsSelector } from '../../selectors/postsSelectors'
 

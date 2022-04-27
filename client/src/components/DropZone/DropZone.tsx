@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import styles from './ScssDropZone.scss'
 import { FileWithPath, useDropzone } from 'react-dropzone'
 
 type DropZoneType = {
-  onChange: (files: string) => void
+  onChange: (files: string | ArrayBuffer | null) => void
 }
 
 const DropZone: React.FC<DropZoneType> = ({ onChange }) => {
@@ -43,11 +43,22 @@ const DropZone: React.FC<DropZoneType> = ({ onChange }) => {
     borderColor: '#ff1744'
   }
 
-  const onUploadFile = (files: any) => {
-    const base64 = window.btoa(files.path)
-    console.log(base64)
-    onChange('')
-  }
+  const onUploadFile = useCallback((acceptedFiles: FileWithPath[]) => {
+    acceptedFiles.forEach((file: FileWithPath) => {
+      const reader = new FileReader()
+
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.error('file reading has failed')
+      reader.onload = () => {
+
+        const binaryStr = reader.result
+        onChange(binaryStr)
+      }
+      reader.readAsDataURL(file)
+    })
+
+  }, [])
+
 
   const style = useMemo(() => ({
     ...baseStyle,

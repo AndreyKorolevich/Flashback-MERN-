@@ -1,14 +1,27 @@
-import { PostsActionType } from '../actions/postsAction'
+import { PostsActionType, PostsResponseDataType } from '../actions/postsAction'
 
 export const FETCH_ALL = 'FETCH_ALL'
+export const CREATE = 'CREATE'
 
-const initialState = {}
-type PostsStateType = typeof initialState
+const initialState = {
+  posts: []
+}
+type PostsStateType = {
+  posts: Array<PostsResponseDataType>
+}
 
 export default (state: PostsStateType = initialState, action: PostsActionType) => {
   switch (action.type) {
     case FETCH_ALL:
-      return action.payload
+      return {
+        ...state,
+        posts: action.payload
+      }
+    case CREATE:
+      return {
+        ...state,
+        posts: [...state.posts, action.payload]
+      }
     default:
       return state
   }
