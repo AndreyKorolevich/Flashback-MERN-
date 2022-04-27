@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
-import styles from './ScssDropZone.scss'
+import styles from './ScssDropZone.module.scss'
 import { FileWithPath, useDropzone } from 'react-dropzone'
+import FileList from './FileList/FileList'
 
 type DropZoneType = {
   onChange: (files: string | ArrayBuffer | null) => void
@@ -71,19 +72,13 @@ const DropZone: React.FC<DropZoneType> = ({ onChange }) => {
     isDragReject
   ])
 
-  const files = acceptedFiles.map((file: FileWithPath) => (
-    <li key={file.path}>{file.path}</li>
-  ))
-
   return (
     <section className={styles.section}>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <p>Drag files here or click</p>
       </div>
-      <aside>
-        <ul>{files}</ul>
-      </aside>
+      <FileList acceptedFiles={acceptedFiles}/>
     </section>
   )
 }

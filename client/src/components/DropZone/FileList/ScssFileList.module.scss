@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  max-width: 360px;
+
+  .list, .item {
+    padding: 0;
+  }
+
+  .item {
+    p {
+      font-size: 0.75rem;
+    }
+  }
+
+  .itemAvatar {
+    width: 20px;
+    height: 20px;
+
+    .avatar {
+      width: 20px;
+      height: 20px;
+    }
+
+    .icon {
+      font-size: 15px;
+    }
+  }
+}

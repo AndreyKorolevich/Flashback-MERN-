@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 15px;
+  border-radius: 15px !important;
   height: 100%;
   position: relative;
 }
@@ -43,11 +43,19 @@
 .details {
   display: flex;
   justify-content: space-between;
-  margin: 20px;
+  margin: 10px;
 }
 
+.content {
+  padding: 5px 10px !important;
+  .message {
+    font-size: 1rem;
+  }
+}
+
+
 .title {
-  padding: 0 16px;
+  padding: 0 10px;
 }
 
 .cardActions {
