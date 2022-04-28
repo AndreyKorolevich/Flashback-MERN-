@@ -7,13 +7,14 @@ import { actionsPosts, createPostThunk, updatePostThunk } from '../../actions/po
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { getOpenedPostIdSelector, getOpenedPostSelector } from '../../selectors/postsSelectors'
 
+type SelectedFileType = string | ArrayBuffer | null
 
 export type PostDataType = {
   creator: string
   title: string
   message: string
-  tags: string
-  selectedFile: string | ArrayBuffer | null
+  tags: string | Array<string>
+  selectedFile: SelectedFileType
 }
 const Form: React.FC<unknown> = () => {
   const initialState = {
@@ -23,10 +24,14 @@ const Form: React.FC<unknown> = () => {
     tags: '',
     selectedFile: ''
   }
+
   const [postData, setPostData] = useState<PostDataType>(initialState)
   const dispatch = useAppDispatch()
   const openedPostId = useAppSelector(getOpenedPostIdSelector)
   const post = useAppSelector(getOpenedPostSelector)
+
+  // @ts-ignore
+  window.initialState = postData
 
   useEffect(() => {
     if (post) {
@@ -41,13 +46,16 @@ const Form: React.FC<unknown> = () => {
     } else {
       dispatch(updatePostThunk(openedPostId, postData))
     }
-
     clear()
   }
 
   const clear = () => {
     dispatch(actionsPosts.changeOpenedPostIdActionCreator(null))
     setPostData(initialState)
+  }
+
+  const putSelectedFiles = (selectedFile: SelectedFileType, post: PostDataType) => {
+    setPostData({ ...post, selectedFile })
   }
 
   return (
@@ -64,7 +72,7 @@ const Form: React.FC<unknown> = () => {
                    onChange={(e) => setPostData({ ...postData, message: e.target.value })}/>
         <TextField value={postData.tags} name={'tags'} variant={'outlined'} label={'Tags'} fullWidth size={'small'}
                    onChange={(e) => setPostData({ ...postData, tags: e.target.value })} className={styles.input}/>
-        <DropZone onChange={(e) => setPostData({ ...postData, selectedFile: e })}/>
+        <DropZone onChange={putSelectedFiles} postData={postData}/>
         <Button className={styles.buttonSubmit} variant='contained' color={'primary'} size={'large'} type={'submit'}
                 fullWidth>Submit</Button>
         <Button variant='contained' color={'secondary'} size={'small'} onClick={clear} fullWidth>Clear</Button>

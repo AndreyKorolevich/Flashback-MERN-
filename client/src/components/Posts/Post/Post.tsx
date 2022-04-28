@@ -4,7 +4,7 @@ import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@
 import DehazeIcon from '@mui/icons-material/Dehaze'
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { actionsPosts, PostsResponseDataType } from '../../../actions/postsAction'
+import { actionsPosts, deletePostThunk, likePostThunk, PostsResponseDataType } from '../../../actions/postsAction'
 import moment from 'moment'
 import { useAppDispatch } from '../../../hooks/hooks'
 
@@ -19,11 +19,17 @@ const Post: React.FC<PostsResponseDataType> = ({
                                                  _id
                                                }) => {
   const dispatch = useAppDispatch()
-  const onClickMoreDetail = () => {
-  dispatch(actionsPosts.changeOpenedPostIdActionCreator(_id))
-  }
-  const onClickLike = () => {
 
+  const onClickMoreDetail = () => {
+    dispatch(actionsPosts.changeOpenedPostIdActionCreator(_id))
+  }
+
+  const onClickLike = () => {
+    dispatch(likePostThunk(_id))
+  }
+
+  const onClickDelete = () => {
+    dispatch(deletePostThunk(_id))
   }
 
   return (
@@ -39,19 +45,20 @@ const Post: React.FC<PostsResponseDataType> = ({
         </Button>
       </div>
       <div className={styles.details}>
-        <Typography variant={'body2'} color={'textSecondary'}>{tags.map(tag => `#${tag}`)}</Typography>
+        <Typography variant={'body2'} color={'textSecondary'}>{
+          tags.map(tag => `#${tag}`).join('')
+        }</Typography>
       </div>
       <Typography className={styles.title} variant={'h5'} gutterBottom>{title}</Typography>
-      <CardContent className={styles.content} >
+      <CardContent className={styles.content}>
         <Typography className={styles.message} variant={'h6'} gutterBottom>{message}</Typography>
       </CardContent>
       <CardActions className={styles.cardActions}>
         <Button size={'small'} color={'primary'} onClick={onClickLike}>
           <ThumbUpAltIcon fontSize={'small'}/>
-          Like
-          {likeCount}
+          &nbsp; Like {` ${likeCount}`}
         </Button>
-        <Button size={'small'} color={'primary'} onClick={onClickLike}>
+        <Button size={'small'} color={'primary'} onClick={onClickDelete}>
           <DeleteIcon fontSize={'small'}/>
           Delete
         </Button>

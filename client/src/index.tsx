@@ -1,13 +1,13 @@
 import React from 'react'
+import './index.scss'
+import reducers from './reducers/store'
 import { createRoot } from 'react-dom/client'
-import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { applyMiddleware, compose, createStore } from 'redux'
 import App from './App'
-import reducers from './reducers/store'
-import './index.scss'
+import { Provider } from 'react-redux'
 
-const container = document.getElementById('root');
+const container = document.getElementById('root')
 const root = createRoot(container!)
 const store = createStore(reducers, compose(applyMiddleware(thunk)))
 

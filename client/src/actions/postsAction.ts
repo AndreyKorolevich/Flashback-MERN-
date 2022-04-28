@@ -4,12 +4,13 @@ import { PostDataType } from '../components/Form/Form'
 import {
   CHANGE_OPENED_POST_ID,
   CREATE,
+  DELETE,
   FETCH_ALL,
   SET_FETCHING_FORM,
   SET_FETCHING_POSTS,
   UPDATE
 } from '../reducers/postsReducer'
-
+import { updateTagsType } from '../utils/updateTagsType'
 
 
 export const actionsPosts = {
@@ -17,13 +18,17 @@ export const actionsPosts = {
     type: FETCH_ALL,
     payload
   } as const),
-  createActionCreator: (payload: PostsResponseDataType) => ({
+  createPostActionCreator: (payload: PostsResponseDataType) => ({
     type: CREATE,
     payload
   } as const),
-  updateActionCreator: (payload: PostsResponseDataType) => ({
+  updatePostActionCreator: (payload: PostsResponseDataType) => ({
     type: UPDATE,
     payload
+  } as const),
+  deletePostActionCreator: (id: string) => ({
+    type: DELETE,
+    id
   } as const),
   changeOpenedPostIdActionCreator: (payload: string | null) => ({
     type: CHANGE_OPENED_POST_ID,
@@ -60,7 +65,7 @@ export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) 
     dispatch(actionsPosts.getPostsActionCreator(data))
   } catch (e) {
     console.log(e)
-  }finally {
+  } finally {
     dispatch(actionsPosts.setFetchingPosts(false))
   }
 }
@@ -68,11 +73,12 @@ export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) 
 export const createPostThunk = (post: PostDataType): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingForm(true))
+    post.tags = updateTagsType(post.tags)
     const { data } = await api.createPost(post)
-    dispatch(actionsPosts.createActionCreator(data))
+    dispatch(actionsPosts.createPostActionCreator(data))
   } catch (e) {
     console.log(e)
-  }finally {
+  } finally {
     dispatch(actionsPosts.setFetchingForm(false))
   }
 }
@@ -80,11 +86,36 @@ export const createPostThunk = (post: PostDataType): ThunkType<PostsActionType> 
 export const updatePostThunk = (id: string, post: PostDataType): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingForm(true))
+    post.tags = updateTagsType(post.tags)
     const { data } = await api.updatePost(id, post)
-    dispatch(actionsPosts.updateActionCreator(data))
+    dispatch(actionsPosts.updatePostActionCreator(data))
   } catch (e) {
     console.log(e)
-  }finally {
+  } finally {
     dispatch(actionsPosts.setFetchingForm(false))
+  }
+}
+
+export const deletePostThunk = (id: string): ThunkType<PostsActionType> => async (dispatch) => {
+  try {
+    //dispatch(actionsPosts.setFetchingForm(true))
+    await api.deletePost(id)
+    dispatch(actionsPosts.deletePostActionCreator(id))
+  } catch (e) {
+    console.log(e)
+  } finally {
+    //dispatch(actionsPosts.setFetchingForm(false))
+  }
+}
+
+export const likePostThunk = (id: string): ThunkType<PostsActionType> => async (dispatch) => {
+  try {
+    //dispatch(actionsPosts.setFetchingForm(true))
+    const { data } = await api.likePost(id)
+    dispatch(actionsPosts.updatePostActionCreator(data))
+  } catch (e) {
+    console.log(e)
+  } finally {
+    //dispatch(actionsPosts.setFetchingForm(false))
   }
 }

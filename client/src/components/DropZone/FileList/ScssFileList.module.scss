@@ -7,14 +7,21 @@
   }
 
   .item {
-    p {
-      font-size: 0.75rem;
+    .itemText {
+      p {
+        font-size: 0.75rem;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 
   .itemAvatar {
     width: 20px;
     height: 20px;
+    min-width: 25px;
 
     .avatar {
       width: 20px;

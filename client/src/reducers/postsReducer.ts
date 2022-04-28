@@ -3,6 +3,7 @@ import { PostsActionType, PostsResponseDataType } from '../actions/postsAction'
 export const FETCH_ALL = 'FETCH_ALL'
 export const CREATE = 'CREATE'
 export const UPDATE = 'UPDATE'
+export const DELETE = 'DELETE'
 export const CHANGE_OPENED_POST_ID = 'CHANGE_OPENED_POST_ID'
 export const SET_FETCHING_POSTS = 'SET_FETCHING_POSTS'
 export const SET_FETCHING_FORM = 'SET_FETCHING_FORM'
@@ -40,6 +41,11 @@ export default (state: PostsStateType = initialState, action: PostsActionType) =
           if (post._id === action.payload._id) return action.payload
           return post
         })
+      }
+    case DELETE:
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== action.id)
       }
     case CHANGE_OPENED_POST_ID:
       return {
