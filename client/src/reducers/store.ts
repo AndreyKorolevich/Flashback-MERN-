@@ -1,10 +1,12 @@
 import { Action, combineReducers } from 'redux'
 import postsReducer from './postsReducer'
+import authReducer from './authReducer'
 import { ThunkAction } from 'redux-thunk'
 import { configureStore } from '@reduxjs/toolkit'
 
 const reducers = combineReducers({
-  postsReducer
+  postsReducer,
+  authReducer
 })
 
 const store = configureStore({

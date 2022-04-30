@@ -1,33 +1,21 @@
 import React from 'react'
-import styles from './ScssApp.module.scss'
-import useStales from './materialStyles'
-import { AppBar, Container, Grid, Grow, Typography } from '@material-ui/core'
-import flashback from './img/flashback.png'
-import Posts from './components/Posts/Posts'
-import Form from './components/Form/Form'
-
+import { Container } from '@material-ui/core'
+import Navbar from './components/Navbar/Navbar'
+import Home from './components/Home/Home'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Auth from './components/Auth/Auth'
 
 const App = () => {
-  const materialStyles: any = useStales()
   return (
-    <Container maxWidth='lg'>
-      <AppBar className={styles.appBar} position='static' color='inherit'>
-        <Typography className={styles.heading} variant='h3' align='center'>Flashbacks</Typography>
-        <img className={styles.image} src={flashback} alt='flashback' height='60'/>
-      </AppBar>
-      <Grow in>
-        <Container>
-          <Grid className={materialStyles.container} container  justifyContent='space-between' alignItems='stretch' spacing={3}>
-            <Grid className={styles.postContainer} item xs={12} sm={7}>
-              <Posts/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Form/>
-            </Grid>
-          </Grid>
-        </Container>
-      </Grow>
-    </Container>
+    <BrowserRouter>
+      <Container maxWidth='lg'>
+         <Navbar />
+        <Routes>
+          <Route path={'/'} element={<Home/>} />
+          <Route path={'/auth'} element={<Auth />} />
+        </Routes>
+      </Container>
+    </BrowserRouter>
   )
 }
 
