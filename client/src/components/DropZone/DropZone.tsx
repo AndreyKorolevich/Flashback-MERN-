@@ -2,11 +2,11 @@ import React, { useCallback, useMemo, useState } from 'react'
 import styles from './ScssDropZone.module.scss'
 import { FileWithPath, useDropzone } from 'react-dropzone'
 import FileList from './FileList/FileList'
-import { PostDataType } from '../Form/Form'
+import { PostFormDataInterface } from '../Form/Form'
 
 type DropZoneType = {
-  onChange: (files: string | ArrayBuffer | null, postData: PostDataType) => void
-  postData: PostDataType
+  onChange: (files: string | ArrayBuffer | null, postData: PostFormDataInterface) => void
+  postData: PostFormDataInterface
 }
 
 const baseStyle = {
@@ -47,7 +47,7 @@ const DropZone: React.FC<DropZoneType> = ({ onChange, postData }) => {
   } = useDropzone({ onDrop: files => onUploadFile(files, postData) })
 
 
-  const onUploadFile = useCallback((acceptedFiles: FileWithPath[], postData: PostDataType) => {
+  const onUploadFile = useCallback((acceptedFiles: FileWithPath[], postData: PostFormDataInterface) => {
     setMyFiles([...myFiles, ...acceptedFiles])
 
     acceptedFiles.forEach((file: FileWithPath) => {

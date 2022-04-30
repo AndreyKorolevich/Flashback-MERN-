@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import styles from './ScssAuth.module.scss'
 import { useAppDispatch } from '../../hooks/hooks'
 import { googleSuccessThunk, signInThunk, signUpThunk } from '../../actions/authAction'
-import { useNavigate } from 'react-router-dom'
+import { NavigateFunction, useNavigate } from 'react-router-dom'
 import { Container, Paper, Avatar, Typography, Grid, Button } from '@material-ui/core'
 import LockIcon from '@mui/icons-material/Lock'
 import Input from './Input'
 import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login'
 import Icon from './Icon'
 
-type InitialStateType = {
+export type AuthFormStateType = {
   firstName?: string
   lastName?: string
   email: string
@@ -29,8 +29,8 @@ const initialState = {
 const Auth: React.FC<unknown> = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isSignUp, setIsSignUp] = useState<boolean>(false)
-  const [formData, setFromData] = useState<InitialStateType>(initialState)
-  const navigate = useNavigate()
+  const [formData, setFromData] = useState<AuthFormStateType>(initialState)
+  const navigate: NavigateFunction = useNavigate()
   const dispatch = useAppDispatch()
 
   const onShowPassword = () => {
@@ -44,9 +44,9 @@ const Auth: React.FC<unknown> = () => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (isSignUp) {
-      dispatch(signInThunk(formData, navigate))
-    } else {
       dispatch(signUpThunk(formData, navigate))
+    } else {
+      dispatch(signInThunk(formData, navigate))
     }
   }
 

@@ -1,6 +1,6 @@
 import * as api from '../api'
 import { ActionTypes, ThunkType } from '../reducers/store'
-import { PostDataType } from '../components/Form/Form'
+import { PostFormDataInterface } from '../components/Form/Form'
 import {
   CHANGE_OPENED_POST_ID,
   CREATE,
@@ -50,12 +50,17 @@ export type PostsResponseDataType = {
   title: string,
   message: string,
   creator: string,
+  name: string,
   tags: Array<string>,
   selectedFile: string,
   likeCount: number,
   createAt: Date,
   __v: number
   _id: string
+}
+
+export interface PostDataInterface extends PostFormDataInterface{
+  name: string | null
 }
 
 export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) => {
@@ -70,7 +75,7 @@ export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) 
   }
 }
 
-export const createPostThunk = (post: PostDataType): ThunkType<PostsActionType> => async (dispatch) => {
+export const createPostThunk = (post: PostDataInterface): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingForm(true))
     post.tags = updateTagsType(post.tags)
@@ -83,7 +88,7 @@ export const createPostThunk = (post: PostDataType): ThunkType<PostsActionType> 
   }
 }
 
-export const updatePostThunk = (id: string, post: PostDataType): ThunkType<PostsActionType> => async (dispatch) => {
+export const updatePostThunk = (id: string, post: PostDataInterface): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingForm(true))
     post.tags = updateTagsType(post.tags)

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core'
 import styles from './ScssNavbar.module.scss'
 import flashback from '../../img/flashback.png'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { actionsAuth, UserType } from '../../actions/authAction'
+import { Link, useLocation } from 'react-router-dom'
+import { removeUsedData, UserType } from '../../actions/authAction'
 import { useAppDispatch } from '../../hooks/hooks'
+import { AUTH_DATA } from '../../constants'
 
 type AuthDataType = {
   user: UserType,
@@ -18,12 +19,11 @@ const Navbar: React.FC<unknown> = () => {
 
   useEffect(() => {
     const token = authData?.token
-    setAuthData(JSON.parse(localStorage.getItem('authData') as string))
-  },[location])
+    setAuthData(JSON.parse(localStorage.getItem(AUTH_DATA) as string))
+  }, [location])
 
   const onLogout = () => {
-    dispatch(actionsAuth.logoutActionCreator())
-    localStorage.removeItem('authData')
+    dispatch(removeUsedData())
     setAuthData(null)
   }
 

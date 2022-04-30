@@ -13,7 +13,7 @@ const Post: React.FC<PostsResponseDataType> = ({
                                                  message,
                                                  tags,
                                                  createAt,
-                                                 creator,
+                                                 name,
                                                  selectedFile,
                                                  title,
                                                  _id
@@ -36,7 +36,7 @@ const Post: React.FC<PostsResponseDataType> = ({
     <Card className={styles.card}>
       <CardMedia className={styles.media} image={selectedFile} title={title}/>
       <div className={styles.overlay}>
-        <Typography variant={'h6'}>{creator}</Typography>
+        <Typography variant={'h6'}>{name}</Typography>
         <Typography variant={'body2'}>{moment(createAt).fromNow()}</Typography>
       </div>
       <div className={styles.overlay2}>

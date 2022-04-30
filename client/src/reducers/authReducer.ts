@@ -21,7 +21,9 @@ export default (state: AuthStateType = initialState, action: AuthActionType) => 
       }
     case LOGOUT:
       return {
-        ...initialState
+        ...state,
+        user: null,
+        token: null
       }
     default:
       return state

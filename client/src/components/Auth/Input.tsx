@@ -24,8 +24,8 @@ const Input: React.FC<InputType> = ({ onShowPassword, onChange, half, name, auto
                  label={label}
                  autoFocus={autoFocus}
                  type={type}
-                 inputProps={name === 'password' ? {
-                   endadornment: (
+                 InputProps={name === 'password' ? {
+                   endAdornment: (
                      <InputAdornment position={'end'}>
                        <IconButton onClick={onShowPassword}>
                          {type === 'password' ? <VisibilityIcon/> : <VisibilityOffIcon/>}
@@ -34,7 +34,6 @@ const Input: React.FC<InputType> = ({ onShowPassword, onChange, half, name, auto
                    )
                  } : undefined}
       />
-
     </Grid>
   )
 }

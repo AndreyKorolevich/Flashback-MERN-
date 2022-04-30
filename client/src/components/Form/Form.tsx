@@ -6,32 +6,35 @@ import classname from 'classnames'
 import { actionsPosts, createPostThunk, updatePostThunk } from '../../actions/postsAction'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { getOpenedPostIdSelector, getOpenedPostSelector } from '../../selectors/postsSelectors'
+import { AUTH_DATA } from '../../constants'
 
 type SelectedFileType = string | ArrayBuffer | null
 
-export type PostDataType = {
-  creator: string
+export interface PostFormDataInterface {
   title: string
   message: string
   tags: string | Array<string>
   selectedFile: SelectedFileType
 }
+
 const Form: React.FC<unknown> = () => {
   const initialState = {
-    creator: '',
     title: '',
     message: '',
     tags: '',
     selectedFile: ''
   }
 
-  const [postData, setPostData] = useState<PostDataType>(initialState)
+  const [postData, setPostData] = useState<PostFormDataInterface>(initialState)
+  const [name, setName] = useState<string | null>(null)
   const dispatch = useAppDispatch()
   const openedPostId = useAppSelector(getOpenedPostIdSelector)
   const post = useAppSelector(getOpenedPostSelector)
 
-  // @ts-ignore
-  window.initialState = postData
+  useEffect(() => {
+    const authData = JSON.parse(localStorage.getItem(AUTH_DATA) as string)
+    setName(authData?.user?.name)
+  }, [])
 
   useEffect(() => {
     if (post) {
@@ -42,9 +45,9 @@ const Form: React.FC<unknown> = () => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (openedPostId === null) {
-      dispatch(createPostThunk(postData))
+      dispatch(createPostThunk({ ...postData, name }))
     } else {
-      dispatch(updatePostThunk(openedPostId, postData))
+      dispatch(updatePostThunk(openedPostId, { ...postData, name }))
     }
     clear()
   }
@@ -54,7 +57,7 @@ const Form: React.FC<unknown> = () => {
     setPostData(initialState)
   }
 
-  const putSelectedFiles = (selectedFile: SelectedFileType, post: PostDataType) => {
+  const putSelectedFiles = (selectedFile: SelectedFileType, post: PostFormDataInterface) => {
     setPostData({ ...post, selectedFile })
   }
 
@@ -62,13 +65,10 @@ const Form: React.FC<unknown> = () => {
     <Paper className={styles.paper}>
       <form autoComplete={'off'} noValidate className={classname(styles.form, styles.root)} onSubmit={onSubmit}>
         <Typography variant={'h6'}>{openedPostId ? 'Editing' : 'Add'} a card</Typography>
-        <TextField value={postData.creator} name={'creator'} variant={'outlined'} label={'Creator'} fullWidth
-                   className={styles.input} size={'small'}
-                   onChange={(e) => setPostData({ ...postData, creator: e.target.value })}/>
         <TextField value={postData.title} name={'title'} variant={'outlined'} label={'Title'} fullWidth size={'small'}
                    onChange={(e) => setPostData({ ...postData, title: e.target.value })} className={styles.input}/>
         <TextField value={postData.message} name={'message'} variant={'outlined'} label={'Message'}
-                   size={'small'} className={styles.input} fullWidth
+                   size={'small'} className={styles.input} fullWidth multiline minRows={3} maxRows={3}
                    onChange={(e) => setPostData({ ...postData, message: e.target.value })}/>
         <TextField value={postData.tags} name={'tags'} variant={'outlined'} label={'Tags'} fullWidth size={'small'}
                    onChange={(e) => setPostData({ ...postData, tags: e.target.value })} className={styles.input}/>
