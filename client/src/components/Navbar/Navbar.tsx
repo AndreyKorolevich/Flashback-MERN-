@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core'
 import styles from './ScssNavbar.module.scss'
 import flashback from '../../img/flashback.png'
-import { Link, useLocation } from 'react-router-dom'
+import decode from 'jwt-decode'
+import { Link } from 'react-router-dom'
 import { removeUsedData, UserType } from '../../actions/authAction'
-import { useAppDispatch } from '../../hooks/hooks'
-import { AUTH_DATA } from '../../constants'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { getTokenSelector, getUserDataSelector } from '../../selectors/postsSelectors'
 
-type AuthDataType = {
-  user: UserType,
-  token: string
+type JwtTokenType = {
+  exp: number;
 }
 
 const Navbar: React.FC<unknown> = () => {
-  const [authData, setAuthData] = useState<AuthDataType | null>(null)
+  const user = useAppSelector<UserType | null>(getUserDataSelector)
+  const token = useAppSelector<string | null>(getTokenSelector)
   const dispatch = useAppDispatch()
-  const location = useLocation()
-
-  useEffect(() => {
-    const token = authData?.token
-    setAuthData(JSON.parse(localStorage.getItem(AUTH_DATA) as string))
-  }, [location])
 
   const onLogout = () => {
     dispatch(removeUsedData())
-    setAuthData(null)
   }
+
+  useEffect(() => {
+    if (token) {
+      const decodeToken = decode<JwtTokenType>(token)
+
+      if (decodeToken.exp * 1000 < new Date().getTime()) {
+        onLogout()
+      }
+    }
+  })
 
   return (
     <div className={styles.brandContainer}>
@@ -35,12 +39,12 @@ const Navbar: React.FC<unknown> = () => {
         </Typography>
         <img className={styles.image} src={flashback} alt='flashback' height='60'/>
         <Toolbar className={styles.toolbar}>
-          {authData
+          {user
             ? (
               <div className={styles.profile}>
-                <Avatar className={styles.purple} alt={authData.user.name}
-                        src={authData.user.imageUrl}>{authData.user.name.charAt(0)}</Avatar>
-                <Typography className={styles.userName} variant={'h6'}>{authData.user.name}</Typography>
+                <Avatar className={styles.purple} alt={user.name}
+                        src={user.imageUrl}>{user.name.charAt(0)}</Avatar>
+                <Typography className={styles.userName} variant={'h6'}>{user.name}</Typography>
                 <Button component={Link} to={'/auth'} variant={'contained'} className={styles.logout}
                         color={'secondary'} onClick={onLogout}>
                   Logout

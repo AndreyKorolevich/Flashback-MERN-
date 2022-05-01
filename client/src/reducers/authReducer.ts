@@ -17,7 +17,9 @@ export default (state: AuthStateType = initialState, action: AuthActionType) => 
   switch (action.type) {
     case AUTH:
       return {
-        ...state
+        ...state,
+        user: action.payload.user,
+        token: action.payload.token
       }
     case LOGOUT:
       return {

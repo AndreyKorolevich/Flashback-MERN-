@@ -10,7 +10,8 @@ export type UserType = {
   email: string
   familyName: string
   givenName: string
-  googleId: string
+  googleId?: string
+  _id?: string
   imageUrl?: string
   name: string
 }

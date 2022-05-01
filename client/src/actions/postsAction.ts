@@ -53,14 +53,14 @@ export type PostsResponseDataType = {
   name: string,
   tags: Array<string>,
   selectedFile: string,
-  likeCount: number,
+  likes: Array<string>,
   createAt: Date,
   __v: number
   _id: string
 }
 
 export interface PostDataInterface extends PostFormDataInterface{
-  name: string | null
+  name: string | undefined
 }
 
 export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) => {

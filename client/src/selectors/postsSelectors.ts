@@ -1,5 +1,6 @@
 import { PostFormDataInterface } from '../components/Form/Form'
 import { RootStateType } from '../reducers/store'
+import { UserType } from '../actions/authAction'
 
 export const getPostsSelector = (state: RootStateType) => state.postsReducer.posts
 export const getFetchingPostsSelector = (state: RootStateType) => state.postsReducer.isFetchingPosts
@@ -17,3 +18,6 @@ export const getOpenedPostSelector = (state: RootStateType): null | PostFormData
     }
   }
 }
+
+export const getUserDataSelector = (state: RootStateType): UserType | null => state.authReducer?.user
+export const getTokenSelector = (state: RootStateType): string | null => state.authReducer?.token
