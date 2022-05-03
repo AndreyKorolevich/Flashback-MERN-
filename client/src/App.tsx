@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Container } from '@material-ui/core'
-import Navbar from './components/Navbar/Navbar'
 import Home from './components/Home/Home'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Auth from './components/Auth/Auth'
@@ -9,7 +8,7 @@ import { useAppDispatch, useAppSelector } from './hooks/hooks'
 import { actionsAuth, UserType } from './actions/authAction'
 import PostDetails from './components/PostDetails/PostDetails'
 import { getUserDataSelector } from './selectors/postsSelectors'
-import TESTNAVBAR from './components/Navbar/TESTNAVBAR'
+import Navbar from './components/Navbar/Navbar'
 
 const App = () => {
   const dispatch = useAppDispatch()
@@ -22,9 +21,8 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <Navbar/>
       <Container maxWidth='xl'>
-        <Navbar/>
-        <TESTNAVBAR/>
         <Routes>
           <Route path={'/'} element={<Navigate replace to='/posts'/>}/>
           <Route path={'/posts'} element={<Home/>}/>

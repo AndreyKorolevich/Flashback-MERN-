@@ -7,7 +7,7 @@ type PaginationType = {}
 
 const Paginate: React.FC<PaginationType> = () => {
   return (
-    <Pagination count={5}
+    <Pagination count={3}
                 className={styles.pagination}
                 page={1}
                 variant={'outlined'}

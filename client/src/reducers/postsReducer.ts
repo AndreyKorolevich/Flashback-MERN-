@@ -1,6 +1,6 @@
 import { PostsActionType, PostsResponseDataType } from '../actions/postsAction'
 
-export const FETCH_ALL = 'FETCH_ALL'
+export const FETCH_POSTS = 'FETCH_POSTS'
 export const CREATE = 'CREATE'
 export const UPDATE = 'UPDATE'
 export const DELETE = 'DELETE'
@@ -24,7 +24,7 @@ type PostsStateType = {
 
 export default (state: PostsStateType = initialState, action: PostsActionType) => {
   switch (action.type) {
-    case FETCH_ALL:
+    case FETCH_POSTS:
       return {
         ...state,
         posts: action.payload

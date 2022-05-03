@@ -1,62 +1,135 @@
-import React, { useEffect } from 'react'
-import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core'
+import * as React from 'react'
 import styles from './ScssNavbar.module.scss'
-import flashback from '../../img/flashback.png'
-import decode from 'jwt-decode'
-import { Link } from 'react-router-dom'
-import { removeUsedData, UserType } from '../../actions/authAction'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import MenuItem from '@mui/material/MenuItem'
+import Menu from '@mui/material/Menu'
+import SearchIcon from '@mui/icons-material/Search'
+import { Avatar, Button, Tooltip } from '@material-ui/core'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { getTokenSelector, getUserDataSelector } from '../../selectors/postsSelectors'
+import { removeUsedData, UserType } from '../../actions/authAction'
+import { getUserDataSelector } from '../../selectors/postsSelectors'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Search, SearchIconWrapper, StyledInputBase } from './materialStyles'
+import { getPostsBySearchThunk } from '../../actions/postsAction'
 
-type JwtTokenType = {
-  exp: number;
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search)
 }
 
 const Navbar: React.FC<unknown> = () => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [searchValue, setSearchValue] = React.useState<string>('')
   const user = useAppSelector<UserType | null>(getUserDataSelector)
-  const token = useAppSelector<string | null>(getTokenSelector)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const query = useQuery()
+  const page = query.get('page') || 1
+  const searchQuery = query.get('searchQuery')
+
+  const isMenuOpen = Boolean(anchorEl)
+
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleMenuClose = () => {
+    setAnchorEl(null)
+  }
 
   const onLogout = () => {
     dispatch(removeUsedData())
   }
 
-  useEffect(() => {
-    if (token) {
-      const decodeToken = decode<JwtTokenType>(token)
-
-      if (decodeToken.exp * 1000 < new Date().getTime()) {
-        onLogout()
-      }
+  const searchPost = () => {
+    if (searchValue.trim()) {
+      dispatch(getPostsBySearchThunk(searchValue))
+      navigate(`/posts/search?searchQuery=${searchValue || 'none'}`)
+    } else {
+      navigate('/')
     }
-  })
+  }
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value)
+  }
+
+  const onKeyPress = (e: React.KeyboardEvent<HTMLImageElement>) => {
+    if (e.key === 'Enter') {
+      searchPost()
+      console.log(e.key)
+    }
+  }
 
   return (
-    <div className={styles.brandContainer}>
-      <AppBar className={styles.appBar} position='static' color='inherit'>
-        <Typography component={Link} to={'/'} className={styles.heading} variant='h3' align='center'>
-          Flashbacks
-        </Typography>
-        <img className={styles.image} src={flashback} alt='flashback' height='60'/>
-        <Toolbar className={styles.toolbar}>
-          {user
-            ? (
-              <div className={styles.profile}>
-                <Avatar className={styles.purple} alt={user.name}
-                        src={user.imageUrl}>{user.name.charAt(0)}</Avatar>
-                <Typography className={styles.userName} variant={'h6'}>{user.name}</Typography>
-                <Button component={Link} to={'/auth'} variant={'contained'} className={styles.logout}
-                        color={'secondary'} onClick={onLogout}>
-                  Logout
-                </Button>
+    <Box sx={{ flexGrow: 1 }} className={styles.container}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography
+            variant="h4"
+            color={'white'}
+            noWrap
+            component={Link}
+            to={'/'}
+            sx={{ display: { xs: 'none', sm: 'block' }, textDecoration: 'none' }}
+          >
+            Flashbacks
+          </Typography>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon/>
+            </SearchIconWrapper>
+            <StyledInputBase
+              value={searchValue}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
+          <Box sx={{ flexGrow: 1 }}/>
+          <Box sx={{ flexGrow: 0 }}>
+            {user
+              ? <div className={styles.userData}>
+                <Typography className={styles.userName} noWrap
+                            sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}
+                            variant={'h6'}>{user.name}
+                </Typography>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleProfileMenuOpen} sx={{ p: 0 }}>
+                    <Avatar src={user.imageUrl} alt={user.name}/>
+                  </IconButton>
+                </Tooltip>
               </div>
-            )
-            : (
-              <Button component={Link} to={'/auth'} variant={'contained'} color={'primary'}>Sing in</Button>
-            )}
+              : <Button component={Link} to={'/auth'} color="inherit">Singin</Button>}
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+              open={isMenuOpen}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleMenuClose}>
+                <Typography textAlign="center" onClick={onLogout}>Logout</Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
-    </div>
+    </Box>
   )
 }
 

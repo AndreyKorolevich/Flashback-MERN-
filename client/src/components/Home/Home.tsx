@@ -5,17 +5,9 @@ import Posts from '../Posts/Posts'
 import Form from '../Form/Form'
 import useStales from '../../materialStyles'
 import Paginate from '../Paginate/Paginate'
-import { useLocation, useNavigate } from 'react-router-dom'
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search)
-}
 
 const Home: React.FC<unknown> = () => {
-  const query = useQuery()
-  const navigate = useNavigate()
-  const page = query.get('page') || 1
-  const searchQuery = query.get('searchQuery')
   const materialStyles: any = useStales()
 
   return (

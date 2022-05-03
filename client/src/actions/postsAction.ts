@@ -5,7 +5,7 @@ import {
   CHANGE_OPENED_POST_ID,
   CREATE,
   DELETE,
-  FETCH_ALL,
+  FETCH_POSTS,
   SET_FETCHING_FORM,
   SET_FETCHING_POSTS,
   UPDATE
@@ -14,8 +14,8 @@ import { updateTagsType } from '../utils/updateTagsType'
 
 
 export const actionsPosts = {
-  getPostsActionCreator: (payload: Array<PostsResponseDataType>) => ({
-    type: FETCH_ALL,
+  setPostsActionCreator: (payload: Array<PostsResponseDataType>) => ({
+    type: FETCH_POSTS,
     payload
   } as const),
   createPostActionCreator: (payload: PostsResponseDataType) => ({
@@ -67,13 +67,26 @@ export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) 
   try {
     dispatch(actionsPosts.setFetchingPosts(true))
     const { data } = await api.fetchPosts()
-    dispatch(actionsPosts.getPostsActionCreator(data))
+    dispatch(actionsPosts.setPostsActionCreator(data))
   } catch (e) {
     console.log(e)
   } finally {
     dispatch(actionsPosts.setFetchingPosts(false))
   }
 }
+
+export const getPostsBySearchThunk = (searchQuery: string): ThunkType<PostsActionType> => async (dispatch) => {
+  try {
+    dispatch(actionsPosts.setFetchingPosts(true))
+    const { data } = await api.fetchPostsBySearch(searchQuery)
+    dispatch(actionsPosts.setPostsActionCreator(data))
+  } catch (e) {
+    console.log(e)
+  } finally {
+    dispatch(actionsPosts.setFetchingPosts(false))
+  }
+}
+
 
 export const createPostThunk = (post: PostDataInterface): ThunkType<PostsActionType> => async (dispatch) => {
   try {

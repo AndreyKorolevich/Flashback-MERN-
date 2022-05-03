@@ -12,6 +12,7 @@ const Posts = () => {
   const isFetchingPosts = useAppSelector(getFetchingPostsSelector)
   const dispatch = useAppDispatch()
 
+
   useEffect(() => {
     dispatch(getPostsThunk())
   }, [dispatch])
