@@ -1,0 +1,1 @@
+export const LIMIT_CARDS_ON_PAGE = 8

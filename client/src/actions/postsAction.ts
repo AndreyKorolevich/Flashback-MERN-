@@ -14,9 +14,12 @@ import { updateTagsType } from '../utils/updateTagsType'
 
 
 export const actionsPosts = {
-  setPostsActionCreator: (payload: Array<PostsResponseDataType>) => ({
+  setPostsActionCreator: (posts: Array<PostsResponseDataType>, numberOfPages: number) => ({
     type: FETCH_POSTS,
-    payload
+    payload: {
+      posts,
+      numberOfPages
+    }
   } as const),
   createPostActionCreator: (payload: PostsResponseDataType) => ({
     type: CREATE,
@@ -63,11 +66,11 @@ export interface PostDataInterface extends PostFormDataInterface{
   name: string | undefined
 }
 
-export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) => {
+export const getPostsThunk = (page: number): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingPosts(true))
-    const { data } = await api.fetchPosts()
-    dispatch(actionsPosts.setPostsActionCreator(data))
+    const { data }= await api.fetchPosts(page)
+    dispatch(actionsPosts.setPostsActionCreator(data.posts, data.numberOfPages))
   } catch (e) {
     console.log(e)
   } finally {
@@ -75,11 +78,11 @@ export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) 
   }
 }
 
-export const getPostsBySearchThunk = (searchQuery: string): ThunkType<PostsActionType> => async (dispatch) => {
+export const getPostsBySearchThunk = (searchQuery: string, page: number): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingPosts(true))
-    const { data } = await api.fetchPostsBySearch(searchQuery)
-    dispatch(actionsPosts.setPostsActionCreator(data))
+    const { data } = await api.fetchPostsBySearch(searchQuery, page)
+    dispatch(actionsPosts.setPostsActionCreator(data.posts, data.numberOfPages))
   } catch (e) {
     console.log(e)
   } finally {

@@ -15,13 +15,13 @@ const Home: React.FC<unknown> = () => {
       <Container maxWidth={'xl'}>
         <Grid className={materialStyles.container} container justifyContent='space-between' alignItems='stretch'
               spacing={3}>
-          <Grid className={styles.postContainer} item xs={12} sm={6} md={9}>
+          <Grid className={styles.postContainer} container alignItems={'stretch'} spacing={3} item xs={12} sm={12} md={8} lg={9}>
             <Posts/>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <Form/>
             <Paper className={styles.pagination} elevation={6}>
-              <Paginate/>
+              <Paginate />
             </Paper>
           </Grid>
         </Grid>

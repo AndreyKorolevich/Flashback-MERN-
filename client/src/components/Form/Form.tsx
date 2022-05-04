@@ -58,7 +58,7 @@ const Form: React.FC<unknown> = () => {
   }
 
   return (
-    <Paper className={styles.paper}>
+    <Paper className={styles.paper} elevation={6}>
       {!user
         ? <Alert severity="info">Please Sign In to create your own flashback and like other flashbacks!</Alert>
         : <form autoComplete={'off'} noValidate className={classname(styles.form, styles.root)} onSubmit={onSubmit}>

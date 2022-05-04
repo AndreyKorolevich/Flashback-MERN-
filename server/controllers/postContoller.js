@@ -1,11 +1,15 @@
 import PostMessage from '../models/postMessage.js'
 import mongoose from 'mongoose'
+import { LIMIT_CARDS_ON_PAGE } from '../constants.js'
 
 export const getPosts = async (req, res) => {
+  const { page } = req.body
   try {
-    const postMessage = await PostMessage.find()
+    const startIndex = (Number(page) - 1) * LIMIT_CARDS_ON_PAGE
+    const total = await PostMessage.countDocuments({})
+    const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT_CARDS_ON_PAGE).skip(startIndex)
 
-    res.status(200).json(postMessage)
+    res.status(200).json({ posts, numberOfPages: Math.ceil(total / LIMIT_CARDS_ON_PAGE) })
   } catch (e) {
     res.status(404).json({ message: e.message })
   }
@@ -13,11 +17,20 @@ export const getPosts = async (req, res) => {
 
 export const getPostsBySearch = async (req, res) => {
   const { searchQuery } = req.query
+  const { page } = req.body
   try {
     const search = new RegExp(searchQuery, 'i')
-    const posts = await PostMessage.find().or([{ title: search }, { tags: search }, {message: search}])
+    const startIndex = (Number(page) - 1) * LIMIT_CARDS_ON_PAGE
 
-    res.status(200).json(posts)
+    const total = await PostMessage.countDocuments().or([{ title: search }, { tags: search }, { message: search }])
+    const posts = await PostMessage
+      .find()
+      .or([{ title: search }, { tags: search }, { message: search }])
+      .sort({ _id: -1 })
+      .limit(LIMIT_CARDS_ON_PAGE)
+      .skip(startIndex)
+
+    res.status(200).json({ posts, numberOfPages: Math.ceil(total / LIMIT_CARDS_ON_PAGE) })
   } catch (e) {
     res.status(404).json({ message: e.message })
   }

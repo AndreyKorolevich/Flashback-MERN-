@@ -14,7 +14,8 @@ import { removeUsedData, UserType } from '../../actions/authAction'
 import { getUserDataSelector } from '../../selectors/postsSelectors'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Search, SearchIconWrapper, StyledInputBase } from './materialStyles'
-import { getPostsBySearchThunk } from '../../actions/postsAction'
+import { getPostsBySearchThunk, getPostsThunk } from '../../actions/postsAction'
+import { useEffect } from 'react'
 
 
 const useQuery = () => {
@@ -28,10 +29,19 @@ const Navbar: React.FC<unknown> = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const query = useQuery()
-  const page = query.get('page') || 1
+  const page = Number(query.get('page')) || 1
   const searchQuery = query.get('searchQuery')
 
   const isMenuOpen = Boolean(anchorEl)
+
+  useEffect(() => {
+    if (searchQuery) {
+      setSearchValue(searchQuery)
+      dispatch(getPostsBySearchThunk(searchQuery, page))
+    } else {
+      dispatch(getPostsThunk(page))
+    }
+  }, [searchQuery, page])
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -41,14 +51,18 @@ const Navbar: React.FC<unknown> = () => {
     setAnchorEl(null)
   }
 
+  const onCleanSearch = () => {
+    setSearchValue('')
+  }
+
   const onLogout = () => {
     dispatch(removeUsedData())
   }
 
   const searchPost = () => {
     if (searchValue.trim()) {
-      dispatch(getPostsBySearchThunk(searchValue))
-      navigate(`/posts/search?searchQuery=${searchValue || 'none'}`)
+      dispatch(getPostsBySearchThunk(searchValue, 1))
+      navigate(`/posts/search?page=${1}&searchQuery=${searchValue || 'none'}`)
     } else {
       navigate('/')
     }
@@ -61,18 +75,18 @@ const Navbar: React.FC<unknown> = () => {
   const onKeyPress = (e: React.KeyboardEvent<HTMLImageElement>) => {
     if (e.key === 'Enter') {
       searchPost()
-      console.log(e.key)
     }
   }
 
   return (
     <Box sx={{ flexGrow: 1 }} className={styles.container}>
-      <AppBar position="static">
+      <AppBar position="static" elevation={6}>
         <Toolbar>
           <Typography
             variant="h4"
             color={'white'}
             noWrap
+            onClick={onCleanSearch}
             component={Link}
             to={'/'}
             sx={{ display: { xs: 'none', sm: 'block' }, textDecoration: 'none' }}

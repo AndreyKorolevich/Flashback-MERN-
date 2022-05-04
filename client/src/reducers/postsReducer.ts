@@ -13,12 +13,14 @@ const initialState = {
   posts: [],
   isFetchingPosts: false,
   isFetchingForm: false,
-  openedPostId: null
+  openedPostId: null,
+  numberOfPages: 3
 }
 type PostsStateType = {
   posts: Array<PostsResponseDataType>
   isFetchingPosts: boolean
   isFetchingForm: boolean
+  numberOfPages: number
   openedPostId: null | string
 }
 
@@ -27,7 +29,8 @@ export default (state: PostsStateType = initialState, action: PostsActionType) =
     case FETCH_POSTS:
       return {
         ...state,
-        posts: action.payload
+        posts: action.payload.posts,
+        numberOfPages: action.payload.numberOfPages
       }
     case CREATE:
       return {

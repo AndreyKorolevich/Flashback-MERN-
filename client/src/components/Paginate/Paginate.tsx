@@ -1,21 +1,28 @@
 import React from 'react'
 import { Pagination, PaginationItem } from '@material-ui/lab'
 import styles from './ScssPaginate.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { useAppSelector } from '../../hooks/hooks'
+import { getNumberOfPagesSelector } from '../../selectors/postsSelectors'
 
-type PaginationType = {}
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search)
+}
 
-const Paginate: React.FC<PaginationType> = () => {
+const Paginate: React.FC<unknown> = () => {
+  const numberOfPages = useAppSelector(getNumberOfPagesSelector)
+  const query = useQuery()
+  const page = Number(query.get('page')) || 1
   return (
-    <Pagination count={3}
+    <Pagination count={numberOfPages}
                 className={styles.pagination}
-                page={1}
+                page={page}
                 variant={'outlined'}
                 color={'primary'}
                 renderItem={(item) => (<PaginationItem
-                    {...item}
-                    component={Link}
-                    to={`/posts?page=${1}`}/>)}
+                  {...item}
+                  component={Link}
+                  to={`/posts?page=${item.page}`}/>)}
     />
   )
 }

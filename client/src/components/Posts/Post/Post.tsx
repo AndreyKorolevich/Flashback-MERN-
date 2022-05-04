@@ -38,7 +38,7 @@ const Post: React.FC<PostsResponseDataType> = ({
   }
 
   return (
-    <Card className={styles.card}>
+    <Card className={styles.card} raised elevation={6}>
       <CardMedia className={styles.media} image={selectedFile} title={title}/>
       <div className={styles.overlay}>
         <Typography variant={'h6'}>{name}</Typography>
