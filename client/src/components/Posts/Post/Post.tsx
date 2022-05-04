@@ -2,23 +2,28 @@ import React from 'react'
 import styles from './ScssPost.module.scss'
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core'
 import DehazeIcon from '@mui/icons-material/Dehaze'
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { actionsPosts, deletePostThunk, likePostThunk, PostsResponseDataType } from '../../../actions/postsAction'
 import moment from 'moment'
-import { useAppDispatch } from '../../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
+import Likes from '../../Like/Like'
+import { UserType } from '../../../actions/authAction'
+import { getUserDataSelector } from '../../../selectors/postsSelectors'
 
 const Post: React.FC<PostsResponseDataType> = ({
-                                                 likeCount,
+                                                 likes,
                                                  message,
                                                  tags,
                                                  createAt,
-                                                 creator,
+                                                 name,
                                                  selectedFile,
                                                  title,
+                                                 creator,
                                                  _id
                                                }) => {
   const dispatch = useAppDispatch()
+  const user = useAppSelector<UserType | null>(getUserDataSelector)
+  const isCorrentUserCreator = user?._id === creator || user?.googleId === creator
 
   const onClickMoreDetail = () => {
     dispatch(actionsPosts.changeOpenedPostIdActionCreator(_id))
@@ -33,16 +38,16 @@ const Post: React.FC<PostsResponseDataType> = ({
   }
 
   return (
-    <Card className={styles.card}>
+    <Card className={styles.card} raised elevation={6}>
       <CardMedia className={styles.media} image={selectedFile} title={title}/>
       <div className={styles.overlay}>
-        <Typography variant={'h6'}>{creator}</Typography>
+        <Typography variant={'h6'}>{name}</Typography>
         <Typography variant={'body2'}>{moment(createAt).fromNow()}</Typography>
       </div>
       <div className={styles.overlay2}>
-        <Button style={{ color: 'white' }} size={'small'} onClick={onClickMoreDetail}>
+        {isCorrentUserCreator && <Button style={{ color: 'white' }} size={'small'} onClick={onClickMoreDetail}>
           <DehazeIcon fontSize={'small'}/>
-        </Button>
+        </Button>}
       </div>
       <div className={styles.details}>
         <Typography variant={'body2'} color={'textSecondary'}>{
@@ -54,14 +59,13 @@ const Post: React.FC<PostsResponseDataType> = ({
         <Typography className={styles.message} variant={'h6'} gutterBottom>{message}</Typography>
       </CardContent>
       <CardActions className={styles.cardActions}>
-        <Button size={'small'} color={'primary'} onClick={onClickLike}>
-          <ThumbUpAltIcon fontSize={'small'}/>
-          &nbsp; Like {` ${likeCount}`}
+        <Button size={'small'} color={'primary'} disabled={!user} onClick={onClickLike}>
+          <Likes likes={likes}/>
         </Button>
-        <Button size={'small'} color={'primary'} onClick={onClickDelete}>
+        {isCorrentUserCreator && <Button size={'small'} color={'primary'} onClick={onClickDelete}>
           <DeleteIcon fontSize={'small'}/>
           Delete
-        </Button>
+        </Button>}
       </CardActions>
     </Card>
   )

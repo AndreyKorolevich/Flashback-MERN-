@@ -1,10 +1,27 @@
 import axios from 'axios'
-import { PostDataType } from '../components/Form/Form'
+import { AuthFormStateType } from '../components/Auth/Auth'
+import { AUTH_DATA } from '../constants'
+import { PostDataInterface } from '../actions/postsAction'
 
-const url = 'http://localhost:5000/posts'
+const API = axios.create({baseURL: 'http://localhost:5000'})
 
-export const fetchPosts = () => axios.get(url)
-export const createPost = (newPost: PostDataType) => axios.post(url, newPost)
-export const updatePost = (id: string, updatePost: PostDataType) => axios.patch(`${url}/${id}`, updatePost)
-export const deletePost = (id: string) => axios.delete(`${url}/${id}`)
-export const likePost = (id: string) => axios.patch(`${url}/${id}/likePost`)
+API.interceptors.request.use((req) =>{
+  const authData = localStorage.getItem(AUTH_DATA)
+  const headers = req.headers
+  if(authData && headers) {
+    headers.Authorization = `Bearer ${JSON.parse(authData).token}`
+  }
+
+  return req
+})
+
+export const fetchPosts = (page: number) => API.get(`/posts?page=${page}`)
+export const fetchPostsBySearch = (searchQuery: string, page: number) => API.get(`/posts/search?page=${page}&searchQuery=${searchQuery || 'none'}`)
+export const createPost = (newPost: PostDataInterface) => API.post('/posts', newPost)
+export const updatePost = (id: string, updatePost: PostDataInterface) => API.patch(`${'/posts'}/${id}`, updatePost)
+export const deletePost = (id: string) => API.delete(`${'/posts'}/${id}`)
+export const likePost = (id: string) => API.patch(`${'/posts'}/${id}/likePost`)
+
+
+export const signIn = (formData: AuthFormStateType) => API.post('/user/signin',  formData)
+export const signUn = (formData: AuthFormStateType) => API.post('/user/signup',  formData)

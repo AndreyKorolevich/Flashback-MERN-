@@ -2,8 +2,7 @@ import * as React from 'react'
 import styles from './ScssFileList.module.scss'
 import { FileWithPath } from 'react-dropzone'
 import ImageIcon from '@mui/icons-material/Image'
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
-import { IconButton } from '@material-ui/core'
+import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 

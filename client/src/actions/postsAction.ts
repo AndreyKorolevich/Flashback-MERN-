@@ -1,11 +1,11 @@
 import * as api from '../api'
 import { ActionTypes, ThunkType } from '../reducers/store'
-import { PostDataType } from '../components/Form/Form'
+import { PostFormDataInterface } from '../components/Form/Form'
 import {
   CHANGE_OPENED_POST_ID,
   CREATE,
   DELETE,
-  FETCH_ALL,
+  FETCH_POSTS,
   SET_FETCHING_FORM,
   SET_FETCHING_POSTS,
   UPDATE
@@ -14,9 +14,12 @@ import { updateTagsType } from '../utils/updateTagsType'
 
 
 export const actionsPosts = {
-  getPostsActionCreator: (payload: Array<PostsResponseDataType>) => ({
-    type: FETCH_ALL,
-    payload
+  setPostsActionCreator: (posts: Array<PostsResponseDataType>, numberOfPages: number) => ({
+    type: FETCH_POSTS,
+    payload: {
+      posts,
+      numberOfPages
+    }
   } as const),
   createPostActionCreator: (payload: PostsResponseDataType) => ({
     type: CREATE,
@@ -50,19 +53,24 @@ export type PostsResponseDataType = {
   title: string,
   message: string,
   creator: string,
+  name: string,
   tags: Array<string>,
   selectedFile: string,
-  likeCount: number,
+  likes: Array<string>,
   createAt: Date,
   __v: number
   _id: string
 }
 
-export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) => {
+export interface PostDataInterface extends PostFormDataInterface{
+  name: string | undefined
+}
+
+export const getPostsThunk = (page: number): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingPosts(true))
-    const { data } = await api.fetchPosts()
-    dispatch(actionsPosts.getPostsActionCreator(data))
+    const { data }= await api.fetchPosts(page)
+    dispatch(actionsPosts.setPostsActionCreator(data.posts, data.numberOfPages))
   } catch (e) {
     console.log(e)
   } finally {
@@ -70,7 +78,20 @@ export const getPostsThunk = (): ThunkType<PostsActionType> => async (dispatch) 
   }
 }
 
-export const createPostThunk = (post: PostDataType): ThunkType<PostsActionType> => async (dispatch) => {
+export const getPostsBySearchThunk = (searchQuery: string, page: number): ThunkType<PostsActionType> => async (dispatch) => {
+  try {
+    dispatch(actionsPosts.setFetchingPosts(true))
+    const { data } = await api.fetchPostsBySearch(searchQuery, page)
+    dispatch(actionsPosts.setPostsActionCreator(data.posts, data.numberOfPages))
+  } catch (e) {
+    console.log(e)
+  } finally {
+    dispatch(actionsPosts.setFetchingPosts(false))
+  }
+}
+
+
+export const createPostThunk = (post: PostDataInterface): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingForm(true))
     post.tags = updateTagsType(post.tags)
@@ -83,7 +104,7 @@ export const createPostThunk = (post: PostDataType): ThunkType<PostsActionType> 
   }
 }
 
-export const updatePostThunk = (id: string, post: PostDataType): ThunkType<PostsActionType> => async (dispatch) => {
+export const updatePostThunk = (id: string, post: PostDataInterface): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingForm(true))
     post.tags = updateTagsType(post.tags)
