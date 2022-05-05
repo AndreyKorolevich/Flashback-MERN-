@@ -8,6 +8,7 @@ import {
   FETCH_POSTS,
   SET_FETCHING_FORM,
   SET_FETCHING_POSTS,
+  SET_POST,
   UPDATE
 } from '../reducers/postsReducer'
 import { updateTagsType } from '../utils/updateTagsType'
@@ -19,6 +20,12 @@ export const actionsPosts = {
     payload: {
       posts,
       numberOfPages
+    }
+  } as const),
+  setCertainPostActionCreator: (post: PostsResponseDataType) => ({
+    type: SET_POST,
+    payload: {
+      post
     }
   } as const),
   createPostActionCreator: (payload: PostsResponseDataType) => ({
@@ -62,14 +69,26 @@ export type PostsResponseDataType = {
   _id: string
 }
 
-export interface PostDataInterface extends PostFormDataInterface{
+export interface PostDataInterface extends PostFormDataInterface {
   name: string | undefined
+}
+
+export const getCertainPostThunk = (id: string): ThunkType<PostsActionType> => async (dispatch) => {
+  try {
+    dispatch(actionsPosts.setFetchingPosts(true))
+    const { data } = await api.fetchCertainPost(id)
+    dispatch(actionsPosts.setCertainPostActionCreator(data))
+  } catch (e) {
+    console.log(e)
+  } finally {
+    dispatch(actionsPosts.setFetchingPosts(false))
+  }
 }
 
 export const getPostsThunk = (page: number): ThunkType<PostsActionType> => async (dispatch) => {
   try {
     dispatch(actionsPosts.setFetchingPosts(true))
-    const { data }= await api.fetchPosts(page)
+    const { data } = await api.fetchPosts(page)
     dispatch(actionsPosts.setPostsActionCreator(data.posts, data.numberOfPages))
   } catch (e) {
     console.log(e)
