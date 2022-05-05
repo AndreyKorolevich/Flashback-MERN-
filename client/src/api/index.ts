@@ -16,6 +16,7 @@ API.interceptors.request.use((req) =>{
 })
 
 export const fetchPosts = (page: number) => API.get(`/posts?page=${page}`)
+export const fetchCertainPost = (id: string) => API.get(`/posts/${id}`)
 export const fetchPostsBySearch = (searchQuery: string, page: number) => API.get(`/posts/search?page=${page}&searchQuery=${searchQuery || 'none'}`)
 export const createPost = (newPost: PostDataInterface) => API.post('/posts', newPost)
 export const updatePost = (id: string, updatePost: PostDataInterface) => API.patch(`${'/posts'}/${id}`, updatePost)

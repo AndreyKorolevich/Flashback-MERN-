@@ -3,6 +3,7 @@ import { RootStateType } from '../reducers/store'
 import { UserType } from '../actions/authAction'
 
 export const getPostsSelector = (state: RootStateType) => state.postsReducer.posts
+export const getCertainPostSelector = (state: RootStateType) => state.postsReducer.post
 export const getNumberOfPagesSelector = (state: RootStateType) => state.postsReducer.numberOfPages
 export const getFetchingPostsSelector = (state: RootStateType) => state.postsReducer.isFetchingPosts
 export const getOpenedPostIdSelector = (state: RootStateType) => state.postsReducer.openedPostId
