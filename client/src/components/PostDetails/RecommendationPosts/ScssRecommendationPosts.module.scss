@@ -1,0 +1,23 @@
+.container {
+  position: relative;
+
+  .recomend {
+    margin-bottom: 1rem;
+    padding: 10px 10px 5px 10px;
+    border-radius: 15px !important;
+    width: fit-content;
+  }
+
+  .section {
+    border-radius: 20px;
+    margin: 10px;
+    flex: 1;
+    min-width: 35%;
+  }
+
+  .progress {
+    position: absolute;
+    top: calc(50% - 20px);
+    left: calc(50% - 20px);
+  }
+}
