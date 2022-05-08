@@ -1,4 +1,4 @@
-import { PostsActionType, PostsResponseDataType } from '../actions/postsAction'
+import { PostsActionType, PostsResponseDataInterface } from '../actions/postsAction'
 
 export const FETCH_POSTS = 'FETCH_POSTS'
 export const CREATE = 'CREATE'
@@ -23,9 +23,9 @@ const initialState = {
   numberOfPages: 3
 }
 type PostsStateType = {
-  posts: Array<PostsResponseDataType>
-  relatedPosts: Array<PostsResponseDataType>
-  post: PostsResponseDataType | null
+  posts: Array<PostsResponseDataInterface>
+  relatedPosts: Array<PostsResponseDataInterface>
+  post: PostsResponseDataInterface | null
   isFetchingPosts: boolean
   isFetchingForm: boolean
   isFetchingRelatedPosts: boolean

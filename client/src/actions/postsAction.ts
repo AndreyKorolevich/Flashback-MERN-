@@ -17,30 +17,30 @@ import { updateTagsType } from '../utils/updateTagsType'
 
 
 export const actionsPosts = {
-  setPostsActionCreator: (posts: Array<PostsResponseDataType>, numberOfPages: number) => ({
+  setPostsActionCreator: (posts: Array<PostsResponseDataInterface>, numberOfPages: number) => ({
     type: FETCH_POSTS,
     payload: {
       posts,
       numberOfPages
     }
   } as const),
-  setCertainPostActionCreator: (post: PostsResponseDataType) => ({
+  setCertainPostActionCreator: (post: PostsResponseDataInterface) => ({
     type: SET_POST,
     payload: {
       post
     }
   } as const),
-  setRelatedPostsActionCreator: (posts: Array<PostsResponseDataType>) => ({
+  setRelatedPostsActionCreator: (posts: Array<PostsResponseDataInterface>) => ({
     type: SET_RELATED_POST,
     payload: {
       posts
     }
   } as const),
-  createPostActionCreator: (payload: PostsResponseDataType) => ({
+  createPostActionCreator: (payload: PostsResponseDataInterface) => ({
     type: CREATE,
     payload
   } as const),
-  updatePostActionCreator: (payload: PostsResponseDataType) => ({
+  updatePostActionCreator: (payload: PostsResponseDataInterface) => ({
     type: UPDATE,
     payload
   } as const),
@@ -68,7 +68,7 @@ export const actionsPosts = {
 
 export type PostsActionType = ActionTypes<typeof actionsPosts>
 
-export type PostsResponseDataType = {
+export interface PostsResponseDataInterface {
   title: string,
   message: string,
   creator: string,
