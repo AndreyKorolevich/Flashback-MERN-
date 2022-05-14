@@ -11,6 +11,7 @@ import {
 import { CircularProgress, Divider, Paper, Typography } from '@material-ui/core'
 import { getCertainPostThunk } from '../../actions/postsAction'
 import RecommendationPosts from './RecommendationPosts/RecommendationPosts'
+import Comment from './Comment/Comment'
 
 
 type PostDetailsType = {}
@@ -53,6 +54,7 @@ const PostDetails: React.FC<PostDetailsType> = () => {
               </Typography>
               <Typography className={styles.created} variant="body1">{moment(post?.createAt).fromNow()}</Typography>
               <Divider style={{ margin: '20px 0' }}/>
+              <Comment post={post} />
             </div>
             <div className={classes.imageSection}>
               <img className={styles.media}

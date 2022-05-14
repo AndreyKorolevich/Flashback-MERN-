@@ -1,5 +1,5 @@
 import express from 'express'
-import { getPosts, getPostsByTags, getCertainPost, getPostsBySearch, createPosts, updatePost, deletePost, likePost } from '../controllers/postContoller.js'
+import { getPosts, getPostsByTags, commentPost, getCertainPost, getPostsBySearch, createPosts, updatePost, deletePost, likePost } from '../controllers/postContoller.js'
 import auth from '../middleware/authMiddleware.js'
 
 
@@ -13,5 +13,6 @@ router.post('/', auth, createPosts)
 router.patch('/:id', auth, updatePost)
 router.delete('/:id', auth, deletePost)
 router.patch('/:id/likePost', auth, likePost)
+router.post('/:id/commentPost', auth, commentPost)
 
 export default router

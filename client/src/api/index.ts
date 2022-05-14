@@ -20,9 +20,10 @@ export const fetchCertainPost = (id: string) => API.get(`/posts/${id}`)
 export const fetchPostsBySearch = (searchQuery: string, page: number) => API.get(`/posts/search?page=${page}&searchQuery=${searchQuery || 'none'}`)
 export const fetchPostsByTags = (tags: string) => API.get(`/posts/tags?searchQuery=${tags}`)
 export const createPost = (newPost: PostDataInterface) => API.post('/posts', newPost)
-export const updatePost = (id: string, updatePost: PostDataInterface) => API.patch(`${'/posts'}/${id}`, updatePost)
-export const deletePost = (id: string) => API.delete(`${'/posts'}/${id}`)
-export const likePost = (id: string) => API.patch(`${'/posts'}/${id}/likePost`)
+export const updatePost = (id: string, updatePost: PostDataInterface) => API.patch(`/posts/${id}`, updatePost)
+export const deletePost = (id: string) => API.delete(`/posts/${id}`)
+export const likePost = (id: string) => API.patch(`/posts/${id}/likePost`)
+export const comment = (value: string, id: string | undefined) => API.post(`/posts/${id}/commentPost`, { value })
 
 
 export const signIn = (formData: AuthFormStateType) => API.post('/user/signin',  formData)

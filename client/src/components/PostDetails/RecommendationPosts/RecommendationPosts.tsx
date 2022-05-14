@@ -6,7 +6,6 @@ import { getFetchingRelatedPostsSelector, getRelatedPostsSelector } from '../../
 import { getPostsByTagsThunk, PostsResponseDataInterface } from '../../../actions/postsAction'
 import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../Posts/Post/Post'
-import Posts from '../../Posts/Posts'
 
 type RecommendationPostsType = {
   post: PostsResponseDataInterface | null

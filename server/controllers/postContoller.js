@@ -124,3 +124,18 @@ export const likePost = async (req, res) => {
     res.status(409).json({ message: e.message })
   }
 }
+
+export const commentPost = async (req, res) => {
+  const { id } = req.params
+  const { value } = req.body
+
+  try {
+    const post = await PostMessage.findById(id)
+    post.comments.push(value)
+    const updatePost = await PostMessage.findByIdAndUpdate(id, post, { new: true })
+
+    res.status(201).json(updatePost)
+  } catch (e) {
+    res.status(409).json({ message: e.message })
+  }
+}
