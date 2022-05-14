@@ -19,20 +19,30 @@
   justify-content: space-between;
   border-radius: 10px !important;
   position: relative;
-}
 
-.overlay {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: white;
-}
+  .overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
 
-.overlay2 {
-  position: absolute;
-  top: 20px;
-  right: 0;
-  color: white;
+    .name {
+      font-size: 0.8rem;
+      color: #bbdefb;
+    }
+
+    .created {
+      font-size: 0.7rem;
+      color: #e0e0e0;
+    }
+  }
+
+  .overlay2 {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    color: white;
+  }
 }
 
 .grid {
@@ -42,13 +52,16 @@
 .details {
   display: flex;
   justify-content: space-between;
-  margin: 10px;
+  margin: 5px 10px;
 }
 
 .content {
   padding: 5px 10px !important;
+  height: 4rem;
+
   .message {
     font-size: 1rem;
+    color: #616161;
   }
 }
 

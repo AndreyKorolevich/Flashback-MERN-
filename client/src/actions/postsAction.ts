@@ -8,31 +8,39 @@ import {
   FETCH_POSTS,
   SET_FETCHING_FORM,
   SET_FETCHING_POSTS,
+  SET_FETCHING_RELATED_POSTS,
   SET_POST,
+  SET_RELATED_POST,
   UPDATE
 } from '../reducers/postsReducer'
 import { updateTagsType } from '../utils/updateTagsType'
 
 
 export const actionsPosts = {
-  setPostsActionCreator: (posts: Array<PostsResponseDataType>, numberOfPages: number) => ({
+  setPostsActionCreator: (posts: Array<PostsResponseDataInterface>, numberOfPages: number) => ({
     type: FETCH_POSTS,
     payload: {
       posts,
       numberOfPages
     }
   } as const),
-  setCertainPostActionCreator: (post: PostsResponseDataType) => ({
+  setCertainPostActionCreator: (post: PostsResponseDataInterface) => ({
     type: SET_POST,
     payload: {
       post
     }
   } as const),
-  createPostActionCreator: (payload: PostsResponseDataType) => ({
+  setRelatedPostsActionCreator: (posts: Array<PostsResponseDataInterface>) => ({
+    type: SET_RELATED_POST,
+    payload: {
+      posts
+    }
+  } as const),
+  createPostActionCreator: (payload: PostsResponseDataInterface) => ({
     type: CREATE,
     payload
   } as const),
-  updatePostActionCreator: (payload: PostsResponseDataType) => ({
+  updatePostActionCreator: (payload: PostsResponseDataInterface) => ({
     type: UPDATE,
     payload
   } as const),
@@ -51,12 +59,16 @@ export const actionsPosts = {
   setFetchingForm: (flag: boolean) => ({
     type: SET_FETCHING_FORM,
     flag
+  } as const),
+  setFetchingRelatedPosts: (flag: boolean) => ({
+    type: SET_FETCHING_RELATED_POSTS,
+    flag
   } as const)
 }
 
 export type PostsActionType = ActionTypes<typeof actionsPosts>
 
-export type PostsResponseDataType = {
+export interface PostsResponseDataInterface {
   title: string,
   message: string,
   creator: string,
@@ -109,6 +121,17 @@ export const getPostsBySearchThunk = (searchQuery: string, page: number): ThunkT
   }
 }
 
+export const getPostsByTagsThunk = (tags: string): ThunkType<PostsActionType> => async (dispatch) => {
+  try {
+    dispatch(actionsPosts.setFetchingRelatedPosts(true))
+    const { data } = await api.fetchPostsByTags(tags)
+    dispatch(actionsPosts.setRelatedPostsActionCreator(data))
+  } catch (e) {
+    console.log(e)
+  } finally {
+    dispatch(actionsPosts.setFetchingRelatedPosts(false))
+  }
+}
 
 export const createPostThunk = (post: PostDataInterface): ThunkType<PostsActionType> => async (dispatch) => {
   try {

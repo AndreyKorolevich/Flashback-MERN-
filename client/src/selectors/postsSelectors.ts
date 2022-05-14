@@ -4,6 +4,8 @@ import { UserType } from '../actions/authAction'
 
 export const getPostsSelector = (state: RootStateType) => state.postsReducer.posts
 export const getCertainPostSelector = (state: RootStateType) => state.postsReducer.post
+export const getRelatedPostsSelector = (state: RootStateType) => state.postsReducer.relatedPosts
+export const getFetchingRelatedPostsSelector = (state: RootStateType) => state.postsReducer.isFetchingRelatedPosts
 export const getNumberOfPagesSelector = (state: RootStateType) => state.postsReducer.numberOfPages
 export const getFetchingPostsSelector = (state: RootStateType) => state.postsReducer.isFetchingPosts
 export const getOpenedPostIdSelector = (state: RootStateType) => state.postsReducer.openedPostId

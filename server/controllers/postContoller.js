@@ -18,7 +18,7 @@ export const getPosts = async (req, res) => {
 export const getCertainPost = async (req, res) => {
   const { id } = req.params
   try {
-     const post = await PostMessage.findById(id)
+    const post = await PostMessage.findById(id)
 
     res.status(200).json(post)
   } catch (e) {
@@ -42,6 +42,17 @@ export const getPostsBySearch = async (req, res) => {
       .skip(startIndex)
 
     res.status(200).json({ posts, numberOfPages: Math.ceil(total / LIMIT_CARDS_ON_PAGE) })
+  } catch (e) {
+    res.status(404).json({ message: e.message })
+  }
+}
+
+export const getPostsByTags = async (req, res) => {
+  const { searchQuery } = req.query
+  try {
+    const posts = await PostMessage.find({ tags: { $in: searchQuery.split(',') } }).limit(LIMIT_CARDS_ON_PAGE)
+
+    res.status(200).json(posts)
   } catch (e) {
     res.status(404).json({ message: e.message })
   }
