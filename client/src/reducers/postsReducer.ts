@@ -19,7 +19,7 @@ const initialState = {
   post: null,
   isFetchingPosts: false,
   isFetchingForm: false,
-  isFetchingRelatedPosts: false,
+  isFetchingRelatedPosts: true,
   openedPostId: null,
   numberOfPages: 3
 }
@@ -63,7 +63,8 @@ export default (state: PostsStateType = initialState, action: PostsActionType) =
         posts: state.posts.map(post => {
           if(post._id === action.payload._id) return action.payload
           return post
-        })
+        }),
+        post: action.payload
       }
     case UPDATE:
       return {

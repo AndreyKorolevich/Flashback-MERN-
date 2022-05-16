@@ -22,7 +22,7 @@ const Comment: React.FC<CommentType> = ({ post }) => {
   useEffect(() => {
     setComments(post?.comments)
     commentsRef?.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [post?.comments])               // TODO here  
+  }, [post?.comments])
 
   const onComment = () => {
     dispatch(commentPostThunk(`${user?.name}: ${comment}`, post?._id))
@@ -39,9 +39,9 @@ const Comment: React.FC<CommentType> = ({ post }) => {
         <div className={classes.commentsInnerContainer}>
           <Typography gutterBottom variant="h6">Comments</Typography>
           {comments?.map((comment, i) => (
-            <Typography key={i} gutterBottom variant="subtitle1">
-              <strong>{comment.split(': ')[0]}</strong>
-              {comment.split(':')[1]}
+            <Typography className={styles.comment} key={i} gutterBottom variant="subtitle1">
+              <span className={styles.name}>{comment.split(': ')[0]}:</span>
+              <div className={styles.message}>{comment.split(':')[1]}</div>
             </Typography>
           ))}
           <div ref={commentsRef}/>

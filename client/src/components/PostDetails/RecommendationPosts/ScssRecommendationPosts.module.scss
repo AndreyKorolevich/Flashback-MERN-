@@ -3,9 +3,12 @@
 
   .recomend {
     margin-bottom: 1rem;
-    padding: 5px 5px 2px 5px;
-    border-radius: 10px !important;
     width: fit-content;
+  }
+
+  .title{
+    backdrop-filter: blur(2px);
+    padding: 5px 5px 2px 5px;
   }
 
   .section {

@@ -64,7 +64,7 @@ const PostDetails: React.FC<PostDetailsType> = () => {
           </div>
         </Paper>
       }
-      <RecommendationPosts post={post}/>
+      {!isLoading && <RecommendationPosts post={post}/>}
     </>
   )
 }

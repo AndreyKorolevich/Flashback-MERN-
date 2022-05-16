@@ -76,7 +76,7 @@ const Post: React.FC<PostInterface> = ({
         <Button size={'small'} color={'primary'} disabled={!user} onClick={onClickLike}>
           <Likes likes={likes}/>
         </Button>
-        {isCurrentUserCreator && <Button size={'small'} color={'primary'} onClick={onClickDelete}>
+        {isCurrentUserCreator && <Button size={'small'} color={'secondary'} onClick={onClickDelete}>
           <DeleteIcon fontSize={'small'}/>
           Delete
         </Button>}
