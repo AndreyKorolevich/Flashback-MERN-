@@ -6,7 +6,6 @@ import { getFetchingRelatedPostsSelector, getRelatedPostsSelector } from '../../
 import { getPostsByTagsThunk, PostsResponseDataInterface } from '../../../actions/postsAction'
 import { useNavigate, useParams } from 'react-router-dom'
 import Post from '../../Posts/Post/Post'
-import Posts from '../../Posts/Posts'
 
 type RecommendationPostsType = {
   post: PostsResponseDataInterface | null
@@ -24,22 +23,18 @@ const RecommendationPosts: React.FC<RecommendationPostsType> = ({ post }) => {
     if (tags) {
       dispath(getPostsByTagsThunk(tags))
     }
-  }, [post?.tags])
-
-  const onOpenPost = (_id: string) => () => {
-    navigate(`/posts/${_id}`)
-  }
+  }, [post?.tags.join(',')])
 
   return (
     isFetchingRelatedPosts ? <CircularProgress className={styles.progress}/>
       : (<div className={styles.container}>
-        <Paper className={styles.recomend} elevation={3}>
-          <Typography gutterBottom variant="h6">You might also like</Typography>
-        </Paper>
+        <div className={styles.recomend}>
+          <Typography className={styles.title} gutterBottom variant="h5">You might also like</Typography>
+        </div>
         {relatedPosts.length > 0 &&
         <Grid container spacing={2}>
           {relatedPosts.map((post) => (
-            <Grid onClick={onOpenPost(post._id)} key={post._id} item xs={6} sm={3} md={3} lg={2}>
+            <Grid key={post._id} item xs={6} sm={3} md={3} lg={2}>
               <Post {...post} showActions={false} showDetails={false}/>
             </Grid>
           ))}

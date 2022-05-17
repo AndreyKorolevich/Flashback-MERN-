@@ -3,6 +3,7 @@ import { PostsActionType, PostsResponseDataInterface } from '../actions/postsAct
 export const FETCH_POSTS = 'FETCH_POSTS'
 export const CREATE = 'CREATE'
 export const UPDATE = 'UPDATE'
+export const COMMENTS = 'COMMENTS'
 export const DELETE = 'DELETE'
 export const SET_POST = 'SET_POST'
 export const CHANGE_OPENED_POST_ID = 'CHANGE_OPENED_POST_ID'
@@ -18,7 +19,7 @@ const initialState = {
   post: null,
   isFetchingPosts: false,
   isFetchingForm: false,
-  isFetchingRelatedPosts: false,
+  isFetchingRelatedPosts: true,
   openedPostId: null,
   numberOfPages: 3
 }
@@ -55,6 +56,15 @@ export default (state: PostsStateType = initialState, action: PostsActionType) =
       return {
         ...state,
         posts: [...state.posts, action.payload]
+      }
+    case COMMENTS:
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if(post._id === action.payload._id) return action.payload
+          return post
+        }),
+        post: action.payload
       }
     case UPDATE:
       return {

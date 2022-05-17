@@ -3,6 +3,7 @@ import { ActionTypes, ThunkType } from '../reducers/store'
 import { PostFormDataInterface } from '../components/Form/Form'
 import {
   CHANGE_OPENED_POST_ID,
+  COMMENTS,
   CREATE,
   DELETE,
   FETCH_POSTS,
@@ -44,6 +45,10 @@ export const actionsPosts = {
     type: UPDATE,
     payload
   } as const),
+  updateCommentsActionCreator: (payload: PostsResponseDataInterface) => ({
+    type: COMMENTS,
+    payload
+  } as const),
   deletePostActionCreator: (id: string) => ({
     type: DELETE,
     id
@@ -77,6 +82,7 @@ export interface PostsResponseDataInterface {
   selectedFile: string,
   likes: Array<string>,
   createAt: Date,
+  comments: Array<string>
   __v: number
   _id: string
 }
@@ -176,6 +182,18 @@ export const likePostThunk = (id: string): ThunkType<PostsActionType> => async (
     //dispatch(actionsPosts.setFetchingForm(true))
     const { data } = await api.likePost(id)
     dispatch(actionsPosts.updatePostActionCreator(data))
+  } catch (e) {
+    console.log(e)
+  } finally {
+    //dispatch(actionsPosts.setFetchingForm(false))
+  }
+}
+
+export const commentPostThunk = (value: string, id: string | undefined): ThunkType<PostsActionType> => async (dispatch) => {
+  try {
+    //dispatch(actionsPosts.setFetchingForm(true))
+    const { data } = await api.comment(value, id)
+    dispatch(actionsPosts.updateCommentsActionCreator(data))
   } catch (e) {
     console.log(e)
   } finally {
