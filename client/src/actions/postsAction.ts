@@ -1,6 +1,6 @@
 import * as api from '../api'
 import { ActionTypes, ThunkType } from '../reducers/store'
-import { PostFormDataInterface } from '../components/Form/Form'
+import { PostFormDataInterface, SelectedFileType } from '../components/Form/Form'
 import {
   CHANGE_OPENED_POST_ID,
   COMMENTS,
@@ -79,7 +79,7 @@ export interface PostsResponseDataInterface {
   creator: string,
   name: string,
   tags: Array<string>,
-  selectedFile: string,
+  selectedFile: SelectedFileType,
   likes: Array<string>,
   createAt: Date,
   comments: Array<string>

@@ -57,8 +57,9 @@ const PostDetails: React.FC<PostDetailsType> = () => {
               <Comment post={post} />
             </div>
             <div className={classes.imageSection}>
+              {/*TODO fix link*/}
               <img className={styles.media}
-                   src={post?.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'}
+                   src={post?.selectedFile && post?.selectedFile[0] as string || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'}
                    alt={post?.title}/>
             </div>
           </div>

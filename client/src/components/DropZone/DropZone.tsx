@@ -1,12 +1,14 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styles from './ScssDropZone.module.scss'
 import { FileWithPath, useDropzone } from 'react-dropzone'
 import FileList from './FileList/FileList'
 import { PostFormDataInterface } from '../Form/Form'
 
 type DropZoneType = {
-  onChange: (files: string | ArrayBuffer | null, postData: PostFormDataInterface) => void
+  onChange: (files: string, postData: PostFormDataInterface) => void
   postData: PostFormDataInterface
+  fileField: boolean
+  resetFileField: (value: boolean) => void
 }
 
 const baseStyle = {
@@ -36,7 +38,7 @@ const rejectStyle = {
   borderColor: '#ff1744'
 }
 
-const DropZone: React.FC<DropZoneType> = ({ onChange, postData }) => {
+const DropZone: React.FC<DropZoneType> = ({ onChange, postData, fileField, resetFileField }) => {
   const [myFiles, setMyFiles] = useState<FileWithPath[]>([])
   const {
     getRootProps,
@@ -46,6 +48,14 @@ const DropZone: React.FC<DropZoneType> = ({ onChange, postData }) => {
     isDragReject
   } = useDropzone({ onDrop: files => onUploadFile(files, postData) })
 
+
+  useEffect(() => {
+    if (fileField) {
+      removeAll()
+      resetFileField(false)
+    }
+
+  }, [fileField])
 
   const onUploadFile = useCallback((acceptedFiles: FileWithPath[], postData: PostFormDataInterface) => {
     setMyFiles([...myFiles, ...acceptedFiles])
@@ -58,6 +68,7 @@ const DropZone: React.FC<DropZoneType> = ({ onChange, postData }) => {
       reader.onload = () => {
 
         const binaryStr = reader.result
+        // @ts-ignore
         onChange(binaryStr, postData)
       }
       reader.readAsDataURL(file)
@@ -92,7 +103,7 @@ const DropZone: React.FC<DropZoneType> = ({ onChange, postData }) => {
         <input {...getInputProps()} />
         <p>Drag files here or click</p>
       </div>
-      <FileList acceptedFiles={myFiles} removeFile={removeFile} />
+      <FileList acceptedFiles={myFiles} removeFile={removeFile}/>
     </section>
   )
 }

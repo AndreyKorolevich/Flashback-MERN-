@@ -50,9 +50,11 @@ const Post: React.FC<PostInterface> = ({
     navigate(`/post/${_id}`)
   }
 
+  // @ts-ignore
   return (
     <Card className={styles.card} raised elevation={6}>
-      <CardMedia className={styles.media} onClick={openPost} image={selectedFile} />
+      {/*TODO fix link*/}
+      <CardMedia className={styles.media} onClick={openPost} image={selectedFile !== null ? selectedFile[0] as string : undefined} />
       <div className={styles.overlay}>
         <Typography className={styles.name} variant={'h6'}>{name}</Typography>
         <Typography className={styles.created} variant={'body2'}>{moment(createAt).fromNow()}</Typography>

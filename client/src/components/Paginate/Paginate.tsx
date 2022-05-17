@@ -14,7 +14,7 @@ const Paginate: React.FC<unknown> = () => {
   const query = useQuery()
   const page = Number(query.get('page')) || 1
   return (
-    <Pagination count={numberOfPages}
+    <Pagination count={numberOfPages}  //TODO fix amount buttons. If more than 3 add dots.
                 className={styles.pagination}
                 page={page}
                 variant={'outlined'}
