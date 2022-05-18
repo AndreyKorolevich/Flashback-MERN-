@@ -54,7 +54,7 @@ const Post: React.FC<PostInterface> = ({
   return (
     <Card className={styles.card} raised elevation={6}>
       {/*TODO fix link*/}
-      <CardMedia className={styles.media} onClick={openPost} image={selectedFile !== null ? selectedFile[0] as string : undefined} />
+      <CardMedia className={styles.media} onClick={openPost} image={selectedFile !== null ? selectedFile[3] as string : undefined} />
       <div className={styles.overlay}>
         <Typography className={styles.name} variant={'h6'}>{name}</Typography>
         <Typography className={styles.created} variant={'body2'}>{moment(createAt).fromNow()}</Typography>
