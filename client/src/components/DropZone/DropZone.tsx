@@ -76,8 +76,7 @@ const DropZone: React.FC<DropZoneType> = ({ onChange, postData, fileField, reset
       reader.onerror = () => console.error('file reading has failed')
       reader.onload = () => {
 
-        const binaryStr = reader.result
-        // @ts-ignore
+        const binaryStr = reader.result as string
         onChange(binaryStr, postData)
       }
       reader.readAsDataURL(file)

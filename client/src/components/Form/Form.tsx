@@ -33,9 +33,7 @@ const Form: React.FC<unknown> = () => {
   const openedPostId = useAppSelector(getOpenedPostIdSelector)
   const post = useAppSelector(getOpenedPostSelector)
   const user = useAppSelector<UserType | null>(getUserDataSelector)
-// @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  window.postData = postData
+
   useEffect(() => {
     if (post) {
       setPostData(post)
