@@ -1,4 +1,9 @@
 export const updateTagsType = (tags: string | Array<string>) => {
-   const separator = /[,\s]/ // TODO fix, use ',' or ' '
-   return typeof tags === 'string' ? tags.split(separator) : tags
+   return (typeof tags === 'string'
+     ? tags
+       .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,' ')
+       .replace( /\s\s+/g, ' ' )
+       .trim()
+       .split(' ')
+     : tags)
 }

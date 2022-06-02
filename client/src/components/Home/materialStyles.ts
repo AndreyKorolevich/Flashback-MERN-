@@ -1,8 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 export default makeStyles((theme) => ({
-  [theme.breakpoints.down('sm')]: {
-    container: {
+  container: {
+    [theme.breakpoints.down('xs')]: {
+      alignItems: 'center'
+    },
+    [theme.breakpoints.down('sm')]: {
       flexDirection: 'column-reverse'
     }
   }

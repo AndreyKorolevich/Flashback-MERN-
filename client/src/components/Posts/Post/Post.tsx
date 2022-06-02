@@ -10,6 +10,7 @@ import Likes from '../../Like/Like'
 import { UserType } from '../../../actions/authAction'
 import { getUserDataSelector } from '../../../selectors/postsSelectors'
 import { useNavigate } from 'react-router-dom'
+import PostPhotos from './PostPhotos/PostPhotos'
 
 interface PostInterface extends PostsResponseDataInterface {
   showDetails?: boolean
@@ -47,12 +48,12 @@ const Post: React.FC<PostInterface> = ({
   }
 
   const openPost = () => {
-    navigate(`/post/${_id}`)
+    //navigate(`/post/${_id}`)
   }
 
   return (
-    <Card className={styles.card} raised elevation={6}>
-      <CardMedia className={styles.media} onClick={openPost} image={selectedFile} />
+    <Card className={styles.card} raised elevation={6} onClick={openPost}>
+      <PostPhotos selectedFile={selectedFile}/>
       <div className={styles.overlay}>
         <Typography className={styles.name} variant={'h6'}>{name}</Typography>
         <Typography className={styles.created} variant={'body2'}>{moment(createAt).fromNow()}</Typography>

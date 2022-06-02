@@ -8,8 +8,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { getOpenedPostIdSelector, getOpenedPostSelector, getUserDataSelector } from '../../selectors/postsSelectors'
 import { UserType } from '../../actions/authAction'
 import { Alert } from '@mui/material'
+import { FileWithPath } from 'react-dropzone'
 
-type SelectedFileType = string | ArrayBuffer | null
+export type SelectedFileType = Array<string | ArrayBuffer | FileWithPath>
 
 export interface PostFormDataInterface {
   title: string
@@ -23,10 +24,11 @@ const Form: React.FC<unknown> = () => {
     title: '',
     message: '',
     tags: '',
-    selectedFile: ''
+    selectedFile: []
   }
 
   const [postData, setPostData] = useState<PostFormDataInterface>(initialState)
+  const [fileField, setFileField] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const openedPostId = useAppSelector(getOpenedPostIdSelector)
   const post = useAppSelector(getOpenedPostSelector)
@@ -51,10 +53,15 @@ const Form: React.FC<unknown> = () => {
   const clear = () => {
     dispatch(actionsPosts.changeOpenedPostIdActionCreator(null))
     setPostData(initialState)
+    setFileField(true)
   }
 
-  const putSelectedFiles = (selectedFile: SelectedFileType, post: PostFormDataInterface) => {
-    setPostData({ ...post, selectedFile })
+  const putSelectedFiles = (file: string, post: PostFormDataInterface) => {
+    setPostData({ ...post, selectedFile: [...post.selectedFile, file] })
+  }
+
+  const removeFile = (post: PostFormDataInterface, selectedFiles: SelectedFileType) => {
+    setPostData({ ...post, selectedFile: selectedFiles })
   }
 
   return (
@@ -70,7 +77,8 @@ const Form: React.FC<unknown> = () => {
                      onChange={(e) => setPostData({ ...postData, message: e.target.value })}/>
           <TextField value={postData.tags} name={'tags'} variant={'outlined'} label={'Tags'} fullWidth size={'small'}
                      onChange={(e) => setPostData({ ...postData, tags: e.target.value })} className={styles.input}/>
-          <DropZone onChange={putSelectedFiles} postData={postData}/>
+          <DropZone onChange={putSelectedFiles} postData={postData} fileField={fileField} resetFileField={setFileField}
+                    removeFileFromForm={removeFile}/>
           <Button className={styles.buttonSubmit} variant='contained' color={'primary'} size={'large'} type={'submit'}
                   fullWidth>Submit</Button>
           <Button variant='contained' color={'secondary'} size={'small'} onClick={clear} fullWidth>Clear</Button>
