@@ -3,25 +3,24 @@ import { CardMedia } from '@material-ui/core'
 import styles from './ScssPostPhotos.module.scss'
 import Carousel from 'react-material-ui-carousel'
 import { SelectedFileType } from '../../../Form/Form'
+import { DEFAULT_IMAGES } from '../../../../constants'
 
 type PostPhotosType = {
-  selectedFile: SelectedFileType
+  selectedFile: SelectedFileType | undefined
+  onClick?: () => void
 }
 
-const PostPhotos: React.FC<PostPhotosType> = ({ selectedFile }) => {
+
+const PostPhotos: React.FC<PostPhotosType> = ({ selectedFile, onClick }) => {
+  const images = selectedFile && selectedFile.length !== 0 ? selectedFile : DEFAULT_IMAGES
   return (
     <Carousel
-      indicators={false}
+      className={styles.carousel}
       animation={'slide'}
       autoPlay={false}
-      cycleNavigation={true}
-      navButtonsProps={{
-        style: {
-          padding: '0.2rem'
-        }
-      }}>
+      navButtonsAlwaysInvisible={true}>
       {
-        selectedFile.map((item, i) => <CardMedia key={i} className={styles.media} image={item as string}/>)
+        images.map((item, i) => <CardMedia onClick={onClick} key={i} className={styles.media} image={item as string}/>)
       }
     </Carousel>
   )
