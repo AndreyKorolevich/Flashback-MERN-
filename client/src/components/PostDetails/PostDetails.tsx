@@ -12,6 +12,7 @@ import { CircularProgress, Divider, Paper, Typography } from '@material-ui/core'
 import { getCertainPostThunk } from '../../actions/postsAction'
 import RecommendationPosts from './RecommendationPosts/RecommendationPosts'
 import Comment from './Comment/Comment'
+import PostPhotos from '../Posts/Post/PostPhotos/PostPhotos'
 
 
 type PostDetailsType = {}
@@ -54,13 +55,10 @@ const PostDetails: React.FC<PostDetailsType> = () => {
               </Typography>
               <Typography className={styles.created} variant="body1">{moment(post?.createAt).fromNow()}</Typography>
               <Divider style={{ margin: '20px 0' }}/>
-              <Comment post={post} />
+              <Comment post={post}/>
             </div>
             <div className={classes.imageSection}>
-              {/*TODO fix link*/}
-              <img className={styles.media}
-                   src={post?.selectedFile && post?.selectedFile[0] as string || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'}
-                   alt={post?.title}/>
+              <PostPhotos selectedFile={post?.selectedFile}/>
             </div>
           </div>
         </Paper>

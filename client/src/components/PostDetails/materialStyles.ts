@@ -11,8 +11,10 @@ export default makeStyles((theme) => ({
   },
   imageSection: {
     marginLeft: '20px',
+    width: '90%',
     [theme.breakpoints.down('sm')]: {
-      marginLeft: 0
+      marginLeft: 0,
+      width: '100%',
     }
   },
   commentsOuterContainer: {

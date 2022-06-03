@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './ScssPost.module.scss'
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core'
+import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
 import DehazeIcon from '@mui/icons-material/Dehaze'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { actionsPosts, deletePostThunk, likePostThunk, PostsResponseDataInterface } from '../../../actions/postsAction'
@@ -48,12 +48,12 @@ const Post: React.FC<PostInterface> = ({
   }
 
   const openPost = () => {
-    //navigate(`/post/${_id}`)
+    navigate(`/post/${_id}`)
   }
 
   return (
-    <Card className={styles.card} raised elevation={6} onClick={openPost}>
-      <PostPhotos selectedFile={selectedFile}/>
+    <Card className={styles.card} raised elevation={6}>
+      <PostPhotos selectedFile={selectedFile} onClick={openPost}/>
       <div className={styles.overlay}>
         <Typography className={styles.name} variant={'h6'}>{name}</Typography>
         <Typography className={styles.created} variant={'body2'}>{moment(createAt).fromNow()}</Typography>
