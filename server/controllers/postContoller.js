@@ -3,10 +3,13 @@ import mongoose from 'mongoose'
 import { LIMIT_CARDS_ON_PAGE } from '../constants.js'
 
 export const getPosts = async (req, res) => {
-  const { page } = req.body
+  const { page } = req.query
+
   try {
     const startIndex = (Number(page) - 1) * LIMIT_CARDS_ON_PAGE
+    console.log(startIndex)
     const total = await PostMessage.countDocuments({})
+    console.log(total)
     const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT_CARDS_ON_PAGE).skip(startIndex)
 
     res.status(200).json({ posts, numberOfPages: Math.ceil(total / LIMIT_CARDS_ON_PAGE) })
@@ -27,8 +30,8 @@ export const getCertainPost = async (req, res) => {
 }
 
 export const getPostsBySearch = async (req, res) => {
-  const { searchQuery } = req.query
-  const { page } = req.body
+  const { searchQuery, page } = req.query
+
   try {
     const search = new RegExp(searchQuery, 'i')
     const startIndex = (Number(page) - 1) * LIMIT_CARDS_ON_PAGE

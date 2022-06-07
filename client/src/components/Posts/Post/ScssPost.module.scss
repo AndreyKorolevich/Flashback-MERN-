@@ -53,13 +53,21 @@
   height: 4rem;
 
   .message {
-    font-size: 1rem;
+    height: 100%;
+    overflow: hidden;
+    font-size: 0.8rem;
     color: #616161;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
   }
 }
 
 .title {
   padding: 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cardActions {
