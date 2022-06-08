@@ -6,7 +6,7 @@
     width: fit-content;
   }
 
-  .title{
+  .title {
     backdrop-filter: blur(2px);
     padding: 5px 5px 2px 5px;
   }
@@ -26,5 +26,45 @@
 
   .recommendedPosts {
     display: flex;
+  }
+
+  .scroll {
+    overflow: hidden;
+  }
+
+  .separator {
+    min-width: 15rem;
+    padding: 0 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .buttonWrap{
+    height: calc(100% - 60px);
+    position: absolute;
+    z-index: 1;
+  }
+
+  .arrow {
+    top: calc(50% - 20px);
+    height: 40px;
+    width: 40px;
+    padding: 5px;
+    border-radius: 50%;
+    min-width: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+
+    &:hover{
+      transition: background-color 300ms;
+      background-color: rgba(0, 0, 0, 0.87);
+    }
+  }
+
+  .arrowRight {
+    right: -1rem
+  }
+
+  .arrowLeft {
+    left: -1rem
   }
 }

@@ -1,22 +1,28 @@
 import React, { useEffect } from 'react'
-import { CircularProgress, Grid, Paper, Typography } from '@material-ui/core'
+import { CircularProgress, Typography } from '@material-ui/core'
+import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu'
 import styles from './ScssRecommendationPosts.module.scss'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { getFetchingRelatedPostsSelector, getRelatedPostsSelector } from '../../../selectors/postsSelectors'
 import { getPostsByTagsThunk, PostsResponseDataInterface } from '../../../actions/postsAction'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Post from '../../Posts/Post/Post'
+import usePreventBodyScroll from '../../../hooks/usePreventBodyScroll'
+import LeftArrow from './LeftArrow'
+import RightArrow from './RightArrow'
 
 type RecommendationPostsType = {
   post: PostsResponseDataInterface | null
 }
 
+type scrollVisibilityApiType = React.ContextType<typeof VisibilityContext>;
+
 const RecommendationPosts: React.FC<RecommendationPostsType> = ({ post }) => {
   const { id } = useParams()
-  const navigate = useNavigate()
   const dispath = useAppDispatch()
   const isFetchingRelatedPosts = useAppSelector(getFetchingRelatedPostsSelector)
   const relatedPosts = useAppSelector(getRelatedPostsSelector).filter((post) => post._id !== id)
+  const { disableScroll, enableScroll } = usePreventBodyScroll();
 
   useEffect(() => {
     const tags = post?.tags.join(',')
@@ -25,20 +31,36 @@ const RecommendationPosts: React.FC<RecommendationPostsType> = ({ post }) => {
     }
   }, [post?.tags.join(',')])
 
+  const onWheel = (apiObj: scrollVisibilityApiType, ev: React.WheelEvent): void => {
+    const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15
+
+    if (isThouchpad) {
+      ev.stopPropagation()
+      return
+    }
+
+    if (ev.deltaY < 0) {
+      const nextItem = apiObj.getNextItem()
+      apiObj.scrollToItem(nextItem?.entry?.target, 'smooth', 'end')
+    } else if (ev.deltaY > 0) {
+      const prevItem = apiObj.getPrevItem()
+      apiObj.scrollToItem(prevItem?.entry?.target, 'smooth', 'start')
+    }
+  }
+
   return (
     isFetchingRelatedPosts ? <CircularProgress className={styles.progress}/>
-      : (<div className={styles.container}>
+      : (<div className={styles.container} onMouseEnter={disableScroll} onMouseLeave={enableScroll}>
         <div className={styles.recomend}>
           <Typography className={styles.title} gutterBottom variant="h5">You might also like</Typography>
         </div>
         {relatedPosts.length > 0 &&
-        <div>
+        <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow} itemClassName={styles.separator}
+                    scrollContainerClassName={styles.scroll} onWheel={onWheel}>
           {relatedPosts.map((post) => (
-            <Grid key={post._id} item xs={6} sm={3} md={3} lg={2}>
-              <Post {...post} showActions={false} showDetails={false}/>
-            </Grid>
+            <Post {...post} itemId={post._id} key={post._id} showActions={false} showDetails={false}/>
           ))}
-        </div>}
+        </ScrollMenu>}
       </div>)
   )
 }
