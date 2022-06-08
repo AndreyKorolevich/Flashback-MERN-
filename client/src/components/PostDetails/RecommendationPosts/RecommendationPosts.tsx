@@ -32,13 +32,13 @@ const RecommendationPosts: React.FC<RecommendationPostsType> = ({ post }) => {
           <Typography className={styles.title} gutterBottom variant="h5">You might also like</Typography>
         </div>
         {relatedPosts.length > 0 &&
-        <Grid container spacing={2}>
+        <div>
           {relatedPosts.map((post) => (
             <Grid key={post._id} item xs={6} sm={3} md={3} lg={2}>
               <Post {...post} showActions={false} showDetails={false}/>
             </Grid>
           ))}
-        </Grid>}
+        </div>}
       </div>)
   )
 }
