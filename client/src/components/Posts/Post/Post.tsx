@@ -33,7 +33,7 @@ const Post: React.FC<PostInterface> = ({
                                          _id,
                                          itemId= ''
                                        }) => {
-  const visibility = React.useContext(VisibilityContext);
+  React.useContext(VisibilityContext);
 
   const dispatch = useAppDispatch()
   const user = useAppSelector<UserType | null>(getUserDataSelector)

@@ -8,8 +8,7 @@ import { getPostsByTagsThunk, PostsResponseDataInterface } from '../../../action
 import { useParams } from 'react-router-dom'
 import Post from '../../Posts/Post/Post'
 import usePreventBodyScroll from '../../../hooks/usePreventBodyScroll'
-import LeftArrow from './LeftArrow'
-import RightArrow from './RightArrow'
+import Arrow from './Arrow'
 
 type RecommendationPostsType = {
   post: PostsResponseDataInterface | null
@@ -49,13 +48,14 @@ const RecommendationPosts: React.FC<RecommendationPostsType> = ({ post }) => {
   }
 
   return (
-    isFetchingRelatedPosts ? <CircularProgress className={styles.progress}/>
+    isFetchingRelatedPosts
+      ? <CircularProgress className={styles.progress}/>
       : (<div className={styles.container} onMouseEnter={disableScroll} onMouseLeave={enableScroll}>
         <div className={styles.recomend}>
           <Typography className={styles.title} gutterBottom variant="h5">You might also like</Typography>
         </div>
         {relatedPosts.length > 0 &&
-        <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow} itemClassName={styles.separator}
+        <ScrollMenu LeftArrow={<Arrow isLeft={true}/>} RightArrow={<Arrow isLeft={false}/>} itemClassName={styles.separator}
                     scrollContainerClassName={styles.scroll} onWheel={onWheel}>
           {relatedPosts.map((post) => (
             <Post {...post} itemId={post._id} key={post._id} showActions={false} showDetails={false}/>

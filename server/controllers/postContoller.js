@@ -7,9 +7,7 @@ export const getPosts = async (req, res) => {
 
   try {
     const startIndex = (Number(page) - 1) * LIMIT_CARDS_ON_PAGE
-    console.log(startIndex)
     const total = await PostMessage.countDocuments({})
-    console.log(total)
     const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT_CARDS_ON_PAGE).skip(startIndex)
 
     res.status(200).json({ posts, numberOfPages: Math.ceil(total / LIMIT_CARDS_ON_PAGE) })

@@ -53,6 +53,7 @@
     min-width: 0;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
+    opacity: 0;
 
     &:hover{
       transition: background-color 300ms;
@@ -67,4 +68,9 @@
   .arrowLeft {
     left: -1rem
   }
+
+  .buttonIsVisible{
+    opacity: 1;
+  }
+
 }
