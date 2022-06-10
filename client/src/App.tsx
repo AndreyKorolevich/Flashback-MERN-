@@ -9,6 +9,7 @@ import { actionsAuth, UserType } from './actions/authAction'
 import PostDetails from './components/PostDetails/PostDetails'
 import { getUserDataSelector } from './selectors/postsSelectors'
 import Navbar from './components/Navbar/Navbar'
+import Account from './components/Account/Account'
 
 const App = () => {
   const dispatch = useAppDispatch()
@@ -29,6 +30,7 @@ const App = () => {
           <Route path={'/posts/search'} element={<Home/>}/>
           <Route path={'/post/:id'} element={<PostDetails/>}/>
           <Route path={'/auth'} element={!user ? <Auth/> : <Navigate replace to='/posts'/>}/>
+          <Route path={'/account'} element={<Account />}/>
         </Routes>
       </Container>
     </BrowserRouter>

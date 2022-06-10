@@ -1,0 +1,11 @@
+.box {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  .avatar {
+    height: 64px;
+    margin-bottom: 2px;
+    width: 64px;
+  }
+}

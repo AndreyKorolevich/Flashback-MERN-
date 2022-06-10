@@ -59,6 +59,10 @@ const Navbar: React.FC<unknown> = () => {
     dispatch(removeUsedData())
   }
 
+  const onAccount = () => {
+    navigate(`/account`)
+  }
+
   const searchPost = () => {
     if (searchValue.trim()) {
       dispatch(getPostsBySearchThunk(searchValue, 1))
@@ -138,6 +142,9 @@ const Navbar: React.FC<unknown> = () => {
             >
               <MenuItem onClick={handleMenuClose}>
                 <Typography textAlign="center" onClick={onLogout}>Logout</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleMenuClose}>
+                <Typography textAlign="center" onClick={onAccount}>Account</Typography>
               </MenuItem>
             </Menu>
           </Box>

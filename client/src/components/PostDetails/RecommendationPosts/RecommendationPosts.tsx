@@ -39,11 +39,9 @@ const RecommendationPosts: React.FC<RecommendationPostsType> = ({ post }) => {
     }
 
     if (ev.deltaY < 0) {
-      const nextItem = apiObj.getNextItem()
-      apiObj.scrollToItem(nextItem?.entry?.target, 'smooth', 'end')
+       apiObj.scrollNext();
     } else if (ev.deltaY > 0) {
-      const prevItem = apiObj.getPrevItem()
-      apiObj.scrollToItem(prevItem?.entry?.target, 'smooth', 'start')
+      apiObj.scrollPrev();
     }
   }
 
