@@ -1,5 +1,6 @@
 import React from 'react'
-import { Pagination, PaginationItem } from '@material-ui/lab'
+import Pagination from '@mui/material/Pagination'
+import PaginationItem from '@mui/material/PaginationItem'
 import styles from './ScssPaginate.module.scss'
 import { Link, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/hooks'
@@ -14,9 +15,11 @@ const Paginate: React.FC<unknown> = () => {
   const query = useQuery()
   const page = Number(query.get('page')) || 1
   return (
-    <Pagination count={numberOfPages}  //TODO fix amount buttons. If more than 3 add dots.
+    <Pagination count={numberOfPages}
                 className={styles.pagination}
+                siblingCount={0}
                 page={page}
+                size={'small'}
                 variant={'outlined'}
                 color={'primary'}
                 renderItem={(item) => (<PaginationItem

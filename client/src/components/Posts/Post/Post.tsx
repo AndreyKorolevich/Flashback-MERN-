@@ -11,10 +11,12 @@ import { UserType } from '../../../actions/authAction'
 import { getUserDataSelector } from '../../../selectors/postsSelectors'
 import { useNavigate } from 'react-router-dom'
 import PostPhotos from './PostPhotos/PostPhotos'
+import { VisibilityContext } from 'react-horizontal-scrolling-menu'
 
 interface PostInterface extends PostsResponseDataInterface {
   showDetails?: boolean
   showActions?: boolean
+  itemId?: string
 }
 
 const Post: React.FC<PostInterface> = ({
@@ -28,8 +30,11 @@ const Post: React.FC<PostInterface> = ({
                                          showActions = true,
                                          title,
                                          creator,
-                                         _id
+                                         _id,
+                                         itemId= ''
                                        }) => {
+  React.useContext(VisibilityContext);
+
   const dispatch = useAppDispatch()
   const user = useAppSelector<UserType | null>(getUserDataSelector)
   const isCurrentUserCreator = user?._id === creator || user?.googleId === creator
@@ -52,7 +57,7 @@ const Post: React.FC<PostInterface> = ({
   }
 
   return (
-    <Card className={styles.card} raised elevation={6}>
+    <Card className={styles.card} raised elevation={3}>
       <PostPhotos selectedFile={selectedFile} onClick={openPost}/>
       <div className={styles.overlay}>
         <Typography className={styles.name} variant={'h6'}>{name}</Typography>
