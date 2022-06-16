@@ -4,13 +4,13 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 type InputType = {
-  name: any,
-  onShowPassword?: any,
-  onChange: any,
-  label: any,
+  name: string,
+  onShowPassword?: () => void,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  label: string,
   autoFocus?: any,
-  type?: any,
-  half?: any,
+  type?: string,
+  half?: boolean,
 }
 
 const Input: React.FC<InputType> = ({ onShowPassword, onChange, half, name, autoFocus, type, label }) => {

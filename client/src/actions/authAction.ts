@@ -7,13 +7,17 @@ import { NavigateFunction } from 'react-router-dom'
 import { AUTH_DATA } from '../constants'
 
 export type UserType = {
-  email: string
+  email?: string
   familyName: string
   givenName: string
   googleId?: string
   _id?: string
   imageUrl?: string
-  name: string
+  name?: string,
+  phone?: string,
+  country?: string,
+  gender?: string,
+  timeLocal?: string,
 }
 
 export const actionsAuth = {

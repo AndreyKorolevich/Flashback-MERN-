@@ -23,7 +23,7 @@ export const signin = async (req, res) => {
 }
 
 export const signup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName } = req.body
+  const { email, password, confirmPassword, firstName, lastName, imageUrl, timeLocal } = req.body
   try {
     const user = await User.findOne({ email })
     if (user) {
@@ -35,7 +35,18 @@ export const signup = async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 12)
-    const newUser = await User.create({ email, password: hashPassword, name: `${firstName} ${lastName}` })
+    const newUser = await User.create({
+      password: hashPassword,
+      name: `${firstName} ${lastName}`,
+      familyName: lastName,
+      givenName: firstName,
+      phone: '',
+      country: '',
+      gender: '',
+      imageUrl: '',
+      email,
+      timeLocal
+    })
     const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.SECRET, { expiresIn: '1h' })
 
     res.status(200).json({ user: newUser, token })

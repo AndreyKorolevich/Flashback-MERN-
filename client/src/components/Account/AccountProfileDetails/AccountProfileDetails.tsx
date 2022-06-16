@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import styles from './ScssAccountProfileDetails.module.scss'
+import { UserType } from '../../../actions/authAction'
 import {
   Box,
   Button,
@@ -10,35 +11,44 @@ import {
   Grid,
   TextField
 } from '@mui/material'
+import { useAppSelector } from '../../../hooks/hooks'
+import { getUserDataSelector } from '../../../selectors/postsSelectors'
 
-const states = [
+
+const genders = [
   {
-    value: 'alabama',
-    label: 'Alabama'
+    value: 'male',
+    label: 'Male'
   },
   {
-    value: 'new-york',
-    label: 'New York'
+    value: 'female',
+    label: 'Female'
   },
   {
-    value: 'san-francisco',
-    label: 'San Francisco'
+    value: 'na',
+    label: 'I don`t wish to answer'
   }
 ]
 
 type AccountProfileDetailsType = {}
 
 const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
+  const [values, setValues] = useState<UserType>({
+    givenName: '',
+    familyName: '',
+    email: '',
     phone: '',
-    state: 'Alabama',
+    gender: 'na',
     country: 'USA'
   })
+  const user = useAppSelector(getUserDataSelector)
 
-  const handleChange = (event: any) => {
+
+  useEffect(() => {
+    setValues({ ...values, ...user })
+  }, [user])
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -47,7 +57,7 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
 
   return (
     <form autoComplete="off" noValidate{...props}>
-      <Card>
+      <Card elevation={3}>
         <CardHeader subheader="The information can be edited" title="Profile"/>
         <Divider/>
         <CardContent>
@@ -57,10 +67,10 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
                 fullWidth
                 helperText="Please specify the first name"
                 label="First name"
-                name="firstName"
+                name="givenName"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.givenName}
                 variant="outlined"
               />
             </Grid>
@@ -69,10 +79,10 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
               <TextField
                 fullWidth
                 label="Last name"
-                name="lastName"
+                name="familyName"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={values.familyName}
                 variant="outlined"
               />
             </Grid>
@@ -112,16 +122,16 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Select State"
-                name="state"
+                label="Select Gender"
+                name="gender"
                 onChange={handleChange}
                 required
                 select
                 SelectProps={{ native: true }}
-                value={values.state}
+                value={values.gender}
                 variant="outlined"
               >
-                {states.map((option) => (
+                {genders.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}

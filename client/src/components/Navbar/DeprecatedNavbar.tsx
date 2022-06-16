@@ -43,7 +43,7 @@ const DeprecatedNavbar: React.FC<unknown> = () => {
             ? (
               <div className={styles.profile}>
                 <Avatar className={styles.purple} alt={user.name}
-                        src={user.imageUrl}>{user.name.charAt(0)}</Avatar>
+                        src={user.imageUrl}>{user?.name?.charAt(0)}</Avatar>
                 <Typography className={styles.userName} variant={'h6'}>{user.name}</Typography>
                 <Button component={Link} to={'/auth'} variant={'contained'} className={styles.logout}
                         color={'secondary'} onClick={onLogout}>
