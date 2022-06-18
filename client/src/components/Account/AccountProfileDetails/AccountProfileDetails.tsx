@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styles from './ScssAccountProfileDetails.module.scss'
-import { UserType } from '../../../actions/authAction'
+import { updateUserDataThunk, UserType } from '../../../actions/authAction'
 import {
   Box,
   Button,
@@ -11,24 +11,9 @@ import {
   Grid,
   TextField
 } from '@mui/material'
-import { useAppSelector } from '../../../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import { getUserDataSelector } from '../../../selectors/postsSelectors'
-
-
-const genders = [
-  {
-    value: 'male',
-    label: 'Male'
-  },
-  {
-    value: 'female',
-    label: 'Female'
-  },
-  {
-    value: 'na',
-    label: 'I don`t wish to answer'
-  }
-]
+import { getTimeZone } from '../../../utils/getTimeZone'
 
 type AccountProfileDetailsType = {}
 
@@ -38,10 +23,12 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
     familyName: '',
     email: '',
     phone: '',
-    gender: 'na',
-    country: 'USA'
+    country: 'USA',
+    city: 'Los Angeles',
+    timeZone: getTimeZone(),
   })
   const user = useAppSelector(getUserDataSelector)
+  const dispatch = useAppDispatch()
 
 
   useEffect(() => {
@@ -55,6 +42,11 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
     })
   }
 
+  const onSaveDetails = (e: React.FormEvent) => {
+    e.preventDefault()
+    dispatch(updateUserDataThunk(values))
+  }
+
   return (
     <form autoComplete="off" noValidate{...props}>
       <Card elevation={3}>
@@ -65,7 +57,6 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
                 label="First name"
                 name="givenName"
                 onChange={handleChange}
@@ -122,31 +113,20 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Select Gender"
-                name="gender"
+                label="City"
+                name="city"
                 onChange={handleChange}
                 required
-                select
-                SelectProps={{ native: true }}
-                value={values.gender}
+                value={values.city}
                 variant="outlined"
-              >
-                {genders.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              />
             </Grid>
           </Grid>
         </CardContent>
         <Divider/>
         <Box
           className={styles.box}>
-          <Button color="primary" variant="contained">
+          <Button onClick={onSaveDetails} color="primary" variant="contained">
             Save details
           </Button>
         </Box>

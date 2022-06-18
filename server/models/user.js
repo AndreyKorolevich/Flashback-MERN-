@@ -10,8 +10,8 @@ const userSchema = mongoose.Schema({
   phone: { type: String },
   imageUrl: { type: String },
   country: { type: String },
-  gender: { type: String },
-  timeLocal: { type: String },
+  city: { type: String },
+  timeZone: { type: String },
 })
 
 const User = mongoose.model('User', userSchema)

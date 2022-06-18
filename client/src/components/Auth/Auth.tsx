@@ -8,7 +8,8 @@ import LockIcon from '@mui/icons-material/Lock'
 import Input from './Input'
 import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login'
 import Icon from './Icon'
-import { getTimeZoneAndLocation } from '../../utils/getTimeZone'
+import { getTimeZone } from '../../utils/getTimeZone'
+import { getLocation } from '../../utils/getLocation'
 
 export type AuthFormStateType = {
   firstName?: string
@@ -16,7 +17,9 @@ export type AuthFormStateType = {
   email: string
   password: string
   confirmPassword?: string
-  timeLocal: string
+  timeZone: string
+  country: string
+  city: string
 }
 
 const GOOGLE_ID = '267157391403-mvl0ijkeo93u1ce0cekp4en4u3dbo69l.apps.googleusercontent.com'
@@ -26,7 +29,9 @@ const initialState = {
   email: '',
   password: '',
   confirmPassword: '',
-  timeLocal: getTimeZoneAndLocation()
+  timeZone: getTimeZone(),
+  country: getLocation()[0],
+  city: getLocation()[1]
 }
 
 const Auth: React.FC<unknown> = () => {

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { AuthFormStateType } from '../components/Auth/Auth'
 import { AUTH_DATA } from '../constants'
 import { PostDataInterface } from '../actions/postsAction'
+import { UserType } from '../actions/authAction'
 
 const API = axios.create({baseURL: 'http://localhost:5000'})
 
@@ -28,3 +29,4 @@ export const comment = (value: string, id: string | undefined) => API.post(`/pos
 
 export const signIn = (formData: AuthFormStateType) => API.post('/user/signin',  formData)
 export const signUn = (formData: AuthFormStateType) => API.post('/user/signup',  formData)
+export const updateUserData = (formData: UserType) => API.post('/user/update',  formData)

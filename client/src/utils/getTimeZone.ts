@@ -1,4 +1,4 @@
-export const getTimeZoneAndLocation = (): string => {
+export const getTimeZone = (): string => {
   let result = ''
   const offset = new Date().getTimezoneOffset()
 
@@ -7,7 +7,5 @@ export const getTimeZoneAndLocation = (): string => {
   } else {
     result = 'GMT-' + offset / 60
   }
-
-  result = result + ':' + Intl.DateTimeFormat().resolvedOptions().timeZone
   return result
 }

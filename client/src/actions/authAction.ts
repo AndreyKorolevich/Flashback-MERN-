@@ -16,8 +16,8 @@ export type UserType = {
   name?: string,
   phone?: string,
   country?: string,
-  gender?: string,
-  timeLocal?: string,
+  city?: string,
+  timeZone?: string,
 }
 
 export const actionsAuth = {
@@ -35,10 +35,11 @@ export const actionsAuth = {
 
 export type AuthActionType = ActionTypes<typeof actionsAuth>
 
-export const setUsedData = (user: UserType, token: string): ThunkType<AuthActionType> => async (dispatch) => { //TODO cheack if needs async
+export const setUsedData = (user: UserType, token?: string): ThunkType<AuthActionType> => async (dispatch) => { //TODO cheack if needs async
+  const saveToken = token ? token : JSON.parse(localStorage.getItem(AUTH_DATA) as string).token
   try {
     localStorage.setItem(AUTH_DATA, JSON.stringify({ user, token }))
-    dispatch(actionsAuth.setAuthActionCreator(user, token))
+    dispatch(actionsAuth.setAuthActionCreator(user, saveToken))
   } catch (e) {
     console.log(e)
   }
@@ -80,6 +81,15 @@ export const signUpThunk = (formData: AuthFormStateType, navigate: NavigateFunct
     const { data } = await api.signUn(formData)
     dispatch(setUsedData(data.user, data.token))
     navigate('/')
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const updateUserDataThunk = (formData: UserType): ThunkType<AuthActionType> => async (dispatch) => {
+  try {
+    const { data } = await api.updateUserData(formData)
+    dispatch(setUsedData(data.user, data.token))
   } catch (e) {
     console.log(e)
   }
