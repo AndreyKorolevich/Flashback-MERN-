@@ -30,3 +30,4 @@ export const comment = (value: string, id: string | undefined) => API.post(`/pos
 export const signIn = (formData: AuthFormStateType) => API.post('/user/signin',  formData)
 export const signUn = (formData: AuthFormStateType) => API.post('/user/signup',  formData)
 export const updateUserData = (formData: UserType) => API.post('/user/update',  formData)
+export const googleLogIn = () => API.get('/user/google')

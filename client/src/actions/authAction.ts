@@ -8,8 +8,8 @@ import { AUTH_DATA } from '../constants'
 
 export type UserType = {
   email?: string
-  familyName: string
-  givenName: string
+  firstName: string
+  lastName: string
   googleId?: string
   _id?: string
   imageUrl?: string
@@ -89,6 +89,15 @@ export const signUpThunk = (formData: AuthFormStateType, navigate: NavigateFunct
 export const updateUserDataThunk = (formData: UserType): ThunkType<AuthActionType> => async (dispatch) => {
   try {
     const { data } = await api.updateUserData(formData)
+    dispatch(setUsedData(data.user, data.token))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const googleLogInThunk = (): ThunkType<AuthActionType> => async (dispatch) => {
+  try {
+    const { data } = await api.googleLogIn()
     dispatch(setUsedData(data.user, data.token))
   } catch (e) {
     console.log(e)

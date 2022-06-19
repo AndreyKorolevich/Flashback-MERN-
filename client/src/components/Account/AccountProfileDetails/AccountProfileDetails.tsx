@@ -19,8 +19,8 @@ type AccountProfileDetailsType = {}
 
 const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
   const [values, setValues] = useState<UserType>({
-    givenName: '',
-    familyName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     country: 'USA',
@@ -61,7 +61,7 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
                 name="givenName"
                 onChange={handleChange}
                 required
-                value={values.givenName}
+                value={values.firstName}
                 variant="outlined"
               />
             </Grid>
@@ -73,7 +73,7 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
                 name="familyName"
                 onChange={handleChange}
                 required
-                value={values.familyName}
+                value={values.lastName}
                 variant="outlined"
               />
             </Grid>

@@ -39,8 +39,8 @@ export const signup = async (req, res) => {
     const newUser = await User.create({
       password: hashPassword,
       name: `${firstName} ${lastName}`,
-      familyName: lastName,
-      givenName: firstName,
+      firstName: firstName,
+      lastName: lastName,
       phone: '',
       imageUrl: '',
       email,
@@ -69,6 +69,23 @@ export const update = async (req, res) => {
       console.log(user, '2')
 
     res.status(200).json({ user: updatedUser })
+  } catch (e) {
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+}
+
+
+export const googleSignin = async (req, res) => {
+  try {
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      return res.status(404).json({ message: 'User doesn`t exist.' })
+    }
+
+
+    const token = jwt.sign({ email: user.email, id: user._id }, process.env.SECRET, { expiresIn: '1h' })
+    res.status(200).json({ user, token })
   } catch (e) {
     res.status(500).json({ message: 'Something went wrong' })
   }

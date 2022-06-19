@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styles from './ScssAccountProfile.module.scss'
+import { useAppSelector } from '../../../hooks/hooks'
+import { getUserDataSelector } from '../../../selectors/postsSelectors'
 import {
   Avatar,
   Box,
@@ -10,8 +12,6 @@ import {
   Divider,
   Typography
 } from '@mui/material'
-import { useAppSelector } from '../../../hooks/hooks'
-import { getUserDataSelector } from '../../../selectors/postsSelectors'
 
 type AccountProfileType = {}
 
