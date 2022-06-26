@@ -1,6 +1,6 @@
 import { PostFormDataInterface } from '../components/Form/Form'
 import { RootStateType } from '../reducers/store'
-import { UserType } from '../actions/authAction'
+import { UserType } from '../actions/userAction'
 
 export const getPostsSelector = (state: RootStateType) => state.postsReducer.posts
 export const getCertainPostSelector = (state: RootStateType) => state.postsReducer.post

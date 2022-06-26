@@ -2,7 +2,7 @@ import React from 'react'
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
 import { useAppSelector } from '../../hooks/hooks'
-import { UserType } from '../../actions/authAction'
+import { UserType } from '../../actions/userAction'
 import { getUserDataSelector } from '../../selectors/postsSelectors'
 
 type LikesType = {

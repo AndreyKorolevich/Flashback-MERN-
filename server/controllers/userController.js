@@ -66,7 +66,6 @@ export const update = async (req, res) => {
     }
 
     const updatedUser = await User.findOneAndUpdate({ email }, req.body, { new: true })
-      console.log(user, '2')
 
     res.status(200).json({ user: updatedUser })
   } catch (e) {
@@ -74,18 +73,41 @@ export const update = async (req, res) => {
   }
 }
 
-
-export const googleSignin = async (req, res) => {
+export const updateUserImage = async (req, res) => {
+  const { newUserImage, email } = req.body
   try {
     const user = await User.findOne({ email })
 
     if (!user) {
       return res.status(404).json({ message: 'User doesn`t exist.' })
     }
+console.log(user)
+    const updatedUser = await User.findOneAndUpdate({ email }, { imageUrl: newUserImage }, { new: true })
 
+    res.status(200).json({ user: updatedUser })
+  } catch (e) {
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+}
 
-    const token = jwt.sign({ email: user.email, id: user._id }, process.env.SECRET, { expiresIn: '1h' })
-    res.status(200).json({ user, token })
+export const googleSign = async (req, res) => {
+  const { email, givenName, name, familyName, imageUrl, timeZone, country, city } = req.body
+  try {
+    let newUser = await User.findOne({ email })
+    if (!newUser) {
+      newUser = await User.create({
+        firstName: givenName,
+        lastName: familyName,
+        name,
+        phone: '',
+        imageUrl,
+        email,
+        timeZone,
+        country,
+        city
+      })
+    }
+    res.status(200).json({ user: newUser })
   } catch (e) {
     res.status(500).json({ message: 'Something went wrong' })
   }

@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styles from './ScssAccountProfileDetails.module.scss'
-import { updateUserDataThunk, UserType } from '../../../actions/authAction'
+import { updateUserDataThunk, UserType } from '../../../actions/userAction'
 import {
   Box,
   Button,
@@ -58,7 +58,7 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
               <TextField
                 fullWidth
                 label="First name"
-                name="givenName"
+                name="firstName"
                 onChange={handleChange}
                 required
                 value={values.firstName}
@@ -70,7 +70,7 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
               <TextField
                 fullWidth
                 label="Last name"
-                name="familyName"
+                name="lastName"
                 onChange={handleChange}
                 required
                 value={values.lastName}
@@ -84,6 +84,7 @@ const AccountProfileDetails: React.FC<AccountProfileDetailsType> = (props) => {
                 name="email"
                 onChange={handleChange}
                 required
+                disabled={true}
                 value={values.email}
                 variant="outlined"
               />

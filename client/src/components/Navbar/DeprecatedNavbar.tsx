@@ -4,7 +4,7 @@ import styles from './DeprecatedScssNavbar.module.scss'
 import flashback from '../../img/flashback.png'
 import decode from 'jwt-decode'
 import { Link } from 'react-router-dom'
-import { removeUsedData, UserType } from '../../actions/authAction'
+import { removeUsedData, UserType } from '../../actions/userAction'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { getTokenSelector, getUserDataSelector } from '../../selectors/postsSelectors'
 

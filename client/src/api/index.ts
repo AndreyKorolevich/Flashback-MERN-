@@ -2,14 +2,14 @@ import axios from 'axios'
 import { AuthFormStateType } from '../components/Auth/Auth'
 import { AUTH_DATA } from '../constants'
 import { PostDataInterface } from '../actions/postsAction'
-import { UserType } from '../actions/authAction'
+import { UserType } from '../actions/userAction'
 
-const API = axios.create({baseURL: 'http://localhost:5000'})
+const API = axios.create({ baseURL: 'http://localhost:5000' })
 
-API.interceptors.request.use((req) =>{
+API.interceptors.request.use((req) => {
   const authData = localStorage.getItem(AUTH_DATA)
   const headers = req.headers
-  if(authData && headers) {
+  if (authData && headers) {
     headers.Authorization = `Bearer ${JSON.parse(authData).token}`
   }
 
@@ -27,7 +27,8 @@ export const likePost = (id: string) => API.patch(`/posts/${id}/likePost`)
 export const comment = (value: string, id: string | undefined) => API.post(`/posts/${id}/commentPost`, { value })
 
 
-export const signIn = (formData: AuthFormStateType) => API.post('/user/signin',  formData)
-export const signUn = (formData: AuthFormStateType) => API.post('/user/signup',  formData)
-export const updateUserData = (formData: UserType) => API.post('/user/update',  formData)
-export const googleLogIn = () => API.get('/user/google')
+export const signIn = (formData: AuthFormStateType) => API.post('/user/signin', formData)
+export const signUn = (formData: AuthFormStateType) => API.post('/user/signup', formData)
+export const updateUserData = (formData: UserType) => API.post('/user/update', formData)
+export const googleSign = (formData: UserType) => API.post('/user/google', formData)
+export const updateUserImage = (data: { newUserImage: string, email?: string }) => API.post('/user/image', data)

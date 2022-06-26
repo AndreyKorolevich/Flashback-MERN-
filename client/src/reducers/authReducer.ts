@@ -1,4 +1,4 @@
-import { AuthActionType, UserType } from '../actions/authAction'
+import { AuthActionType, UserType } from '../actions/userAction'
 
 export const AUTH = 'AUTH'
 export const LOGOUT = 'LOGOUT'
