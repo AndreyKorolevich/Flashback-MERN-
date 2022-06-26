@@ -7,7 +7,7 @@ import { actionsPosts, deletePostThunk, likePostThunk, PostsResponseDataInterfac
 import moment from 'moment'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks'
 import Likes from '../../Like/Like'
-import { UserType } from '../../../actions/authAction'
+import { UserType } from '../../../actions/userAction'
 import { getUserDataSelector } from '../../../selectors/postsSelectors'
 import { useNavigate } from 'react-router-dom'
 import PostPhotos from './PostPhotos/PostPhotos'

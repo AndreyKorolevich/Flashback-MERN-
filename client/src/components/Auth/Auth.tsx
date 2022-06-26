@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import styles from './ScssAuth.module.scss'
 import { useAppDispatch } from '../../hooks/hooks'
-import { googleSuccessThunk, signInThunk, signUpThunk } from '../../actions/authAction'
+import { googleSuccessThunk, signInThunk, signUpThunk } from '../../actions/userAction'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
 import { Container, Paper, Avatar, Typography, Grid, Button } from '@material-ui/core'
 import LockIcon from '@mui/icons-material/Lock'
 import Input from './Input'
 import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login'
 import Icon from './Icon'
+import { getTimeZone } from '../../utils/getTimeZone'
+import { getLocation } from '../../utils/getLocation'
 
 export type AuthFormStateType = {
   firstName?: string
@@ -15,6 +17,9 @@ export type AuthFormStateType = {
   email: string
   password: string
   confirmPassword?: string
+  timeZone: string
+  country: string
+  city: string
 }
 
 const GOOGLE_ID = '267157391403-mvl0ijkeo93u1ce0cekp4en4u3dbo69l.apps.googleusercontent.com'
@@ -23,7 +28,10 @@ const initialState = {
   lastName: '',
   email: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  timeZone: getTimeZone(),
+  country: getLocation()[0],
+  city: getLocation()[1]
 }
 
 const Auth: React.FC<unknown> = () => {
@@ -58,13 +66,14 @@ const Auth: React.FC<unknown> = () => {
   }
 
   const googleSuccess = async (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    dispatch(googleSuccessThunk(res))
+    dispatch(googleSuccessThunk(res, formData))
     navigate('/')
   }
 
   const googleFailure = (error: Error) => {
     console.log(error)
   }
+
   return (
     <Container component={'main'} maxWidth={'xs'}>
       <Paper className={styles.paper} elevation={3}>

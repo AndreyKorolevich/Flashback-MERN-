@@ -6,7 +6,7 @@ import classname from 'classnames'
 import { actionsPosts, createPostThunk, updatePostThunk } from '../../actions/postsAction'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { getOpenedPostIdSelector, getOpenedPostSelector, getUserDataSelector } from '../../selectors/postsSelectors'
-import { UserType } from '../../actions/authAction'
+import { UserType } from '../../actions/userAction'
 import { Alert } from '@mui/material'
 import { FileWithPath } from 'react-dropzone'
 

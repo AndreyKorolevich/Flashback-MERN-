@@ -4,7 +4,7 @@ import styles from './DeprecatedScssNavbar.module.scss'
 import flashback from '../../img/flashback.png'
 import decode from 'jwt-decode'
 import { Link } from 'react-router-dom'
-import { removeUsedData, UserType } from '../../actions/authAction'
+import { removeUsedData, UserType } from '../../actions/userAction'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { getTokenSelector, getUserDataSelector } from '../../selectors/postsSelectors'
 
@@ -43,7 +43,7 @@ const DeprecatedNavbar: React.FC<unknown> = () => {
             ? (
               <div className={styles.profile}>
                 <Avatar className={styles.purple} alt={user.name}
-                        src={user.imageUrl}>{user.name.charAt(0)}</Avatar>
+                        src={user.imageUrl}>{user?.name?.charAt(0)}</Avatar>
                 <Typography className={styles.userName} variant={'h6'}>{user.name}</Typography>
                 <Button component={Link} to={'/auth'} variant={'contained'} className={styles.logout}
                         color={'secondary'} onClick={onLogout}>

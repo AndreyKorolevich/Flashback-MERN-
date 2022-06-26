@@ -10,7 +10,7 @@ import Menu from '@mui/material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import { Avatar, Button, Tooltip } from '@material-ui/core'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
-import { removeUsedData, UserType } from '../../actions/authAction'
+import { removeUsedData, UserType } from '../../actions/userAction'
 import { getUserDataSelector } from '../../selectors/postsSelectors'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Search, SearchIconWrapper, StyledInputBase } from './materialStyles'
@@ -57,6 +57,10 @@ const Navbar: React.FC<unknown> = () => {
 
   const onLogout = () => {
     dispatch(removeUsedData())
+  }
+
+  const onAccount = () => {
+    navigate(`/account`)
   }
 
   const searchPost = () => {
@@ -136,6 +140,9 @@ const Navbar: React.FC<unknown> = () => {
               open={isMenuOpen}
               onClose={handleMenuClose}
             >
+              <MenuItem onClick={handleMenuClose}>
+                <Typography textAlign="center" onClick={onAccount}>Account</Typography>
+              </MenuItem>
               <MenuItem onClick={handleMenuClose}>
                 <Typography textAlign="center" onClick={onLogout}>Logout</Typography>
               </MenuItem>
