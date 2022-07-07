@@ -37,7 +37,7 @@ const Post: React.FC<PostInterface> = ({
 
   const dispatch = useAppDispatch()
   const user = useAppSelector<UserType | null>(getUserDataSelector)
-  const isCurrentUserCreator = user?._id === creator || user?.googleId === creator
+  const isCurrentUserCreator = user?._id === creator || user?.googleId === creator // TODO there is a bug
   const navigate = useNavigate()
 
   const onClickMoreDetail = () => {

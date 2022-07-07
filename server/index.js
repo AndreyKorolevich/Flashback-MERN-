@@ -7,9 +7,10 @@ import postRoutes from './routes/postRotes.js'
 import userRoutes from './routes/userRoutes.js'
 
 const app = express()
-const PORT = process.env.PORT || 5000
 dotenv.config()
 app.use(cors())
+
+const PORT = process.env.PORT || 5000
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
