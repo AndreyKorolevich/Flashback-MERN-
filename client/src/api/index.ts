@@ -4,7 +4,7 @@ import { AUTH_DATA } from '../constants'
 import { PostDataInterface } from '../actions/postsAction'
 import { UserType } from '../actions/userAction'
 
-const API = axios.create({ baseURL: 'http://localhost:5000' })
+const API = axios.create({ baseURL: process.env.REACT_APP_API_URl })
 
 API.interceptors.request.use((req) => {
   const authData = localStorage.getItem(AUTH_DATA)
